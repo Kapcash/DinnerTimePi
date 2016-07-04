@@ -14,6 +14,10 @@ Cette application toute simple fonctionne de la façon suivante :
  - Ces utilisateurs peuvent répondre "Ok !" ou "non merci !"
  - En fonction de la réponse, une LED s'allume si la personne arrive.
  
+Seuls 4 clients peuvent être connectés à la fois.
+Précaution à prendre : par défaut, l'adresse IP du serveur est 192.168.1.35. Il faut veiller à attribuer cette adresse IP fixe
+au serveur, via les paramètres DHCP de la box par exemple. Le port utilisé est 6543.
+
 # Comment ça marche ?
 
 L'application utilise un serveur, installé sur la RaspberryPi, et des clients, installés sur les machines des utilisateurs.
@@ -22,7 +26,7 @@ Tout est codé en JAVA, avec quelques lignes de BASH. Le système est basé sur 
 Le serveur, lancé au démarrage de la RaspberryPi, tourne en continue dans l'attente de clients.
 L'application cliente, une fois lancée, se connecte au serveur et attent une requête de celui-ci.
 
-A chaque fois que le bouton sur la Raspberry est pressé, une socket est envoyé aux clients. Une notification apparait alors à l'écran
+A chaque fois que le bouton sur la Raspberry est pressé, une socket est envoyée aux clients. Une notification apparait alors à l'écran
 et demande à l'utilisateur sa réponse. Celle-ci est alors renvoyée au serveur, qui agit en fonction. Si la réponse est "Ok", la LED
 correspondant à l'usager s'allume, sinon elle reste inactive.
 
