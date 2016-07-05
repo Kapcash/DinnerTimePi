@@ -9,21 +9,35 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.LinkedList;
 import java.util.List;
+import java.io.File;
 
 import javax.swing.JFrame;
 
 public class TimeServer {
-
-	private int port = 1234;
-	private String host = "192.168.1.20";
+	//Instance of class : can have only one server at a time
+	static private TimeServer instance;
+	//Default values
+	static private int port = 6543;
+	static private String host = "192.168.1.35"; //Adapt for your network, give a fix IP by DHCP
+	static private String cmd[] = {"/bin/bash","/home/pi/Documents/dinnertimepi/button.sh"}; //Command for listening button
+	//Variables
 	private ServerSocket server = null;
 	private boolean isRunning = true;
-	List<ClientProcessor> list;
+	static private List<ClientProcessor> list;
+	static final private int secondsBetweenPush = 30;
 
-	public TimeServer(){
+	static public TimeServer getInstance(){
+		if(instance == null){
+			instance = new TimeServer(host,port);
+		}
+		return instance;
+	}
+
+	protected TimeServer(int pPort){
 		list = new LinkedList<ClientProcessor>();
+		port = pPort;
 		try {
-			server = new ServerSocket(port, 10, InetAddress.getByName(host));
+			server = new ServerSocket(port);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -31,7 +45,7 @@ public class TimeServer {
 		}
 	}
 
-	public TimeServer(String pHost, int pPort){
+	protected TimeServer(String pHost, int pPort){
 		list = new LinkedList<ClientProcessor>();
 		host = pHost;
 		port = pPort;
@@ -43,18 +57,27 @@ public class TimeServer {
 			e.printStackTrace();
 		}
 	}
-
+	
+	//Launch the server
 	public void open(){
-		Thread t = new Thread(new Runnable(){
+
+		System.out.println("Serveur initialise a l'adresse : "+host+" et au port : "+port);
+		//Server loop
+		Thread clientThread = new Thread(new Runnable(){
 			public void run(){
 				while(isRunning == true){
 					try {
 						Socket client = server.accept();
 
-						System.out.println("Connexion cliente reçue.");
-						ClientProcessor c = new ClientProcessor(client);
-						list.add(c);
-						Thread t = new Thread(c);
+						System.out.println("Connexion cliente recue.");
+						if(list.size() >= 4){ //Can't have more than 4 clients at same time
+							System.out.println("Il y a deja 4 clients connectes, impossible d'en rajouter.");
+							continue;
+						}
+						// Creating new client process
+						ClientProcessor c = new ClientProcessor(client,list.size());
+						list.add(c); //Add this client to the list
+						Thread t = new Thread(c); //Launching client
 						t.start();
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -69,33 +92,56 @@ public class TimeServer {
 				}
 			}
 		});
+		clientThread.start();
 
-		t.start();
-		
-		/* -----------------------
-		 * Frame only used for keyboard listening (-> push button)*/
-		JFrame frame = new JFrame();
-		frame.addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				System.out.println("Key pressed");
-				for(ClientProcessor c : list){
-					c.timeToEat();
-				}
+		Thread buttonThread = new Thread(new Runnable(){
+			public void run(){
+				do{
+					//Listening for button
+					try{
+						Process p_but = Runtime.getRuntime().exec(cmd);
+						p_but.waitFor();
+						if((p_but.exitValue() == 1)){
+							System.out.println("TIME TO EAT !");
+							for(ClientProcessor c : list){
+								c.timeToEat();
+							}
+							System.out.println("Waiting for 30 sec before push again");
+							Thread.sleep(secondsBetweenPush*1000);
+						}
+					}catch(IOException ioe){
+						ioe.printStackTrace();
+					}catch(InterruptedException interrupted){
+						interrupted.printStackTrace();
+					}
+				}while(isRunning);
 			}
-			@Override
-			public void keyReleased(KeyEvent e) {}
-			@Override
-			public void keyPressed(KeyEvent e) {}
 		});
-		frame.setSize(0, 0);
-		frame.pack();
-		frame.setVisible(true);
-		/* ----------------------- */
-		
+		buttonThread.start();
 	}
 
+	//Client disconned
+	static public void closeClient(ClientProcessor c){
+		System.out.println("Client "+c.getName()+" disconnected !");
+		list.remove(c);
+	}
+	
+	//Close the server
 	public void close(){
 		isRunning = false;
+		try{
+			Process p = Runtime.getRuntime().exec("gpio write "+2+" 0");
+			p.waitFor();
+			p = Runtime.getRuntime().exec("gpio write "+3+" 0");
+			p.waitFor();
+			p = Runtime.getRuntime().exec("gpio write "+4+" 0");
+			p.waitFor();
+			p = Runtime.getRuntime().exec("gpio write "+5+" 0");
+			p.waitFor();
+		}catch(IOException ioe){
+			ioe.printStackTrace();
+		}catch(InterruptedException interrupted){
+			interrupted.printStackTrace();
+		}
 	}   
 }
