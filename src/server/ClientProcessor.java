@@ -34,7 +34,7 @@ public class ClientProcessor implements Runnable{
 
 				String response = read();
 				InetSocketAddress remote = (InetSocketAddress)sock.getRemoteSocketAddress();
-
+				System.out.print("[");
 				switch(response.toUpperCase()){
 				case "OK":
 					System.out.print("OK");
@@ -72,10 +72,10 @@ public class ClientProcessor implements Runnable{
 				default: 
 					break;
 				}
-				System.out.println(" received from "+getName()+".");
+				System.out.println("] received from "+getName()+".");
 
 				if(closeConnexion){
-					System.err.println("COMMANDE CLOSE DETECTEE ! ");
+					System.err.println("Closing connexion with "+this.getName()+".");
 					TimeServer.closeClient(this);
 					writer = null;
 					reader = null;
@@ -92,11 +92,11 @@ public class ClientProcessor implements Runnable{
 	}
 
 	public String getName(){
-		return Thread.currentThread().getName();
+		return sock.getInetAddress().getHostName();
 	}
 	
 	public void timeToEat(){
-		writer.write("TIME TO EAT !");
+		writer.write("[Time to eat !]");
 		writer.flush();
 	}
 	
