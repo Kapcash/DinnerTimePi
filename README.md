@@ -47,6 +47,8 @@ pins GPIO.
 - Ajout d'un son à l'apparition de la notification
 - Installation automatique du client
 - Lancement au démarrage de la machine
+- Icone + fenêtre dans le System Tray (Zone de notifications)
 - Nettoyage du code (...)
 - Faire clignoter la LED si la réponse est "2 min !"
 - Boitier imprimé en 3D
+- Compatibilité Android
