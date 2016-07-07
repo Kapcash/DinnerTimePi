@@ -11,8 +11,10 @@ import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.File;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import javax.sound.sampled.*;
 
 import javax.swing.JButton;
 import javax.swing.JWindow;
@@ -23,7 +25,8 @@ public class ClientConnexion implements Runnable, ActionListener{
 	private PrintWriter writer = null;
 	private BufferedInputStream reader = null;
 
-	//Notre liste de commandes. Le serveur nous répondra différemment selon la commande utilisée.
+	private static final String notifSoundPath = "data/sounds/NotifTime.wav";
+
 	private String[] listCommands = {"OK", "2MIN", "NO", "CLOSE"};
 	private static int count = 0;
 	private String name = "Client-";
@@ -69,6 +72,7 @@ public class ClientConnexion implements Runnable, ActionListener{
 			e.printStackTrace();
 		} catch (IOException e) {
 			System.out.println("IOException !");
+			//TODO : Display the error frame
 			e.printStackTrace();
 		}
 	}
@@ -102,6 +106,7 @@ public class ClientConnexion implements Runnable, ActionListener{
 		if(!displayed){
 			displayed = true;
 			System.out.println("Notification displayed");
+			playSound();
 			window.setVisible(true);
 			//Animation
 			for(int i=0;i<250;i++){
@@ -114,6 +119,22 @@ public class ClientConnexion implements Runnable, ActionListener{
 				}
 				window.repaint();
 			}
+		}
+	}
+
+	private void playSound(){
+		try{
+			File soundFile = new File(notifSoundPath);
+			AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioIn);
+			clip.start();
+		}catch(IOException io){
+			io.printStackTrace();
+		}catch(LineUnavailableException line){
+			line.printStackTrace();
+		}catch(UnsupportedAudioFileException unsup){
+			unsup.printStackTrace();
 		}
 	}
 
