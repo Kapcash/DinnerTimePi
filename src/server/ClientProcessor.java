@@ -12,8 +12,11 @@ public class ClientProcessor implements Runnable{
 	private Socket sock;
 	private PrintWriter writer = null;
 	private BufferedInputStream reader = null;
-	private int nb;
-	private int[] gpios = {3,4,5,6};
+
+	private int nb; //The pin number of the current client (from 0 to 3)
+	private int[] gpios = {3,4,5,6}; //Pin numbers used for client LEDS
+	static private String timeToFlash = "60"
+	static private String cmdFlash[] = {"/bin/bash","/home/pi/Documents/DinnerTimePi/src/flashbutton.sh",gpios[nb],timeToFlash};
 
 	public ClientProcessor(Socket pSock,int number){
 		sock = pSock;
@@ -58,7 +61,7 @@ public class ClientProcessor implements Runnable{
 					t.start();
 					break;
 				case "2MIN":
-					//TODO  Faire clignoter la LED
+					Process proc_mode = Runtime.getRuntime().exec(cmdFlash);
 					System.out.print("2MIN");
 					break;
 				case "NO":
