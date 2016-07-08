@@ -87,7 +87,7 @@ public class ClientConnexion implements Runnable, ActionListener{
 				//On attend la réponse
 				String response = read();
 				System.out.println("["+name+"] : "+response+" received");
-				if(response.equals("TIME TO EAT !")){
+				if(response.equals("[Time to eat !]")){ //TODO : Change checking (if message from server change -> doens't work anymore)
 					//TODO : play sound
 					this.displayNotification();
 				}
@@ -143,6 +143,7 @@ public class ClientConnexion implements Runnable, ActionListener{
 		int stream;
 		byte[] b = new byte[4096];
 		stream = reader.read(b);
+		//TODO catch exception if server run out
 		response = new String(b, 0, stream);      
 		return response;
 	}
