@@ -84,11 +84,10 @@ public class ClientConnexion implements Runnable, ActionListener{
 				writer = new PrintWriter(connexion.getOutputStream(), true);
 				reader = new BufferedInputStream(connexion.getInputStream());
 
-				//On attend la réponse
+				//Wainting for answer
 				String response = read();
 				System.out.println("["+name+"] : "+response+" received");
 				if(response.equals("TIME TO EAT !")){
-					//TODO : play sound
 					this.displayNotification();
 				}
 			} catch (IOException e) {
@@ -150,7 +149,7 @@ public class ClientConnexion implements Runnable, ActionListener{
 	private void send(String command){
 		writer.write(command);
 		writer.flush();
-		System.out.println("Commande "+command+" envoyée au serveur");
+		System.out.println("Command "+command+" sent to server");
 	}
 
 	@Override
