@@ -19,7 +19,7 @@ public class TimeServer {
 	//Default values
 	static private int port = 6543;
 	static private String host = "192.168.1.35"; //Adapt for your network, give a fix IP by DHCP
-	static private String cmdButton[] = {"/bin/bash","./button.sh"}; //Command for listening button
+	static private String cmdButton[] = {"/bin/bash","/home/pi/Documents/DinnerTimePi/button.sh"}; //Command for listening button
 	//Variables
 	private ServerSocket server = null;
 	private boolean isRunning = true;
