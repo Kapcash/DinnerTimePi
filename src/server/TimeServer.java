@@ -19,7 +19,7 @@ public class TimeServer {
 	//Default values
 	static private int port = 6543;
 	static private String host = "192.168.1.35"; //Adapt for your network, give a fix IP by DHCP
-	static private String cmd[] = {"/bin/bash","/home/pi/Documents/DinnerTimePi/src/button.sh"}; //Command for listening button
+	static private String cmdButton[] = {"/bin/bash","/home/pi/Documents/DinnerTimePi/src/button.sh"}; //Command for listening button
 	//Variables
 	private ServerSocket server = null;
 	private boolean isRunning = true;
@@ -60,7 +60,6 @@ public class TimeServer {
 	
 	//Launch the server
 	public void open(){
-
 		System.out.println("Serveur initialised at : "+host+" address and : "+port+" port.");
 		//Server loop
 		Thread clientThread = new Thread(new Runnable(){
@@ -94,12 +93,12 @@ public class TimeServer {
 		});
 		clientThread.start();
 
+		//Listening for button
 		Thread buttonThread = new Thread(new Runnable(){
 			public void run(){
 				do{
-					//Listening for button
 					try{
-						Process p_but = Runtime.getRuntime().exec(cmd);
+						Process p_but = Runtime.getRuntime().exec(cmdButton);
 						p_but.waitFor();
 						if((p_but.exitValue() == 1)){
 							System.out.println("[Time to eat !]");
@@ -125,10 +124,15 @@ public class TimeServer {
 		System.out.println("Client "+c.getName()+" disconnected !");
 		list.remove(c);
 	}
+
+	/*public boolean getEnvVariable(){
+		String val = System.getenv("DINNERTIMERUNNING"); //is 'true' or 'false' from startApp script
+		return Boolean.parseBoolean(val);
+	}*/
 	
 	//Close the server
 	public void close(){
-		isRunning = false;
+		System.out.println("Closing server");
 		try{
 			Process p = Runtime.getRuntime().exec("gpio write "+2+" 0");
 			p.waitFor();

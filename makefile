@@ -11,14 +11,9 @@ SERVERPATH = ./src/server
 default: ClientAll
 
 # Compiling
-Client:
-		$(JCC) $(JFLAGS) -d $(CLASSPATH) $(CLIENTPATH)/ClientConnexion.java
 
 ClientAll:
 		$(JCC) $(JFLAGS) -d $(CLASSPATH) $(CLIENTPATH)/*.java
-
-Server:
-		$(JCC) $(JFLAGS) -d $(CLASSPATH) $(SERVERPATH)/ClientProcessor.java $(SERVERPATH)/TimeServer.java
 
 ServerAll:
 		$(JCC) $(JFLAGS) -d $(CLASSPATH) $(SERVERPATH)/*.java
@@ -30,7 +25,7 @@ runc:
 		$(JAVA) -cp $(CLASSPATH) client.Main_Client
 
 runs:
-		$(JAVA) -cp $(CLASSPATH) server.Main_Server
+		$(JAVA) -cp $(CLASSPATH) server.Main_Server start
 
 clean: 
 		$(RM) $(CLASSPATH)/server/*.class

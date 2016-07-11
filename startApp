@@ -1,0 +1,7 @@
+#! /bin/sh
+cd /home/pi/Documents/DinnerTimePi/
+
+date >> test.txt
+/usr/bin/java -cp /home/pi/Documents/DinnerTimePi/bin/ server.Main_Server
+
+exit 0
