@@ -69,11 +69,11 @@ public class ClientConnexion implements Runnable, ActionListener{
 			connexion = new Socket(host, port);
 		} catch (UnknownHostException e) {
 			System.out.println("UnknownHostException !");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("IOException !");
+			System.out.println("The Server is not running.");
 			//TODO : Display the error frame
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 
@@ -84,14 +84,15 @@ public class ClientConnexion implements Runnable, ActionListener{
 				writer = new PrintWriter(connexion.getOutputStream(), true);
 				reader = new BufferedInputStream(connexion.getInputStream());
 
-				//Wainting for answer
+				//Waiting for answer
 				String response = read();
 				System.out.println("["+name+"] : "+response+" received");
-				if(response.equals("TIME TO EAT !")){
+				if(response.equals("[Time to eat !]")){
 					this.displayNotification();
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				System.out.println("The Server is not running anymore.");
+				System.exit(1);
 			}
 		}
 
@@ -118,6 +119,8 @@ public class ClientConnexion implements Runnable, ActionListener{
 				}
 				window.repaint();
 			}
+		}else{
+			System.out.println("Notification NOT displayed");
 		}
 	}
 
@@ -142,7 +145,10 @@ public class ClientConnexion implements Runnable, ActionListener{
 		int stream;
 		byte[] b = new byte[4096];
 		stream = reader.read(b);
-		response = new String(b, 0, stream);      
+		if(stream == -1){
+			throw new IOException("Server ended !");  
+		}
+		response = new String(b, 0, stream);
 		return response;
 	}
 	
