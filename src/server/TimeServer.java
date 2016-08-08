@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.net.BindException;
 import java.util.LinkedList;
 import java.util.List;
 import java.io.File;
@@ -17,7 +18,7 @@ public class TimeServer {
 	//Instance of class : can have only one server at a time
 	static private TimeServer instance;
 	//Default values
-	static private int port = 6543;
+	static private int port = 35150;
 	static private String host = "192.168.1.35"; //Adapt for your network, give a fix IP by DHCP
 	static private String cmdButton[] = {"/bin/bash","/home/pi/Documents/DinnerTimePi/button.sh"}; //Command for listening button
 	//Variables
@@ -38,11 +39,14 @@ public class TimeServer {
 		port = pPort;
 		try {
 			server = new ServerSocket(port);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} catch (BindException bind){
+			bind.printStackTrace();
+			System.exit(1);
+		} catch (UnknownHostException hoste) {
+			hoste.printStackTrace();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		} 
 	}
 
 	protected TimeServer(String pHost, int pPort){
@@ -51,11 +55,14 @@ public class TimeServer {
 		port = pPort;
 		try {
 			server = new ServerSocket(port, 10, InetAddress.getByName(host));
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} catch (BindException bind){
+			bind.printStackTrace();
+			System.exit(1);
+		} catch (UnknownHostException hoste) {
+			hoste.printStackTrace();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		} 
 	}
 	
 	//Launch the server
@@ -148,4 +155,4 @@ public class TimeServer {
 			interrupted.printStackTrace();
 		}
 	}   
-}
+}
