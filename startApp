@@ -1,4 +1,5 @@
 #! /bin/sh
+
 cd /home/pi/Documents/DinnerTimePi/
 
 date >> testStart.txt
