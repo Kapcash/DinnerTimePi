@@ -1,0 +1,35 @@
+#! /bin/sh
+# /etc/init/DinnerTimeStartServer
+
+### BEGIN INIT INFO
+# Provide:	DinnerTimeStartServer
+# Required-Start:	$all
+# Required-Stop:	$remote-fs $syslog
+# Default-Start:	2 3 4 5
+# Default-Stop:		0 1 6
+# Description:		Launch DinnerTime java Server
+### END INIT INFO
+
+case "$1" in
+	start)
+		echo "Starting"
+		/home/pi/Documents/DinnerTimePi/startApp
+	;;
+	stop)
+		echo "Stopping"
+		pid= `ps -aux | grep DinnerTime | awk '${print $2}'`
+		kill -9 $pid
+	;;
+	restart)
+		echo "Restarting"
+		pid= `ps -aux | grep DinnerTime | awk '${print $2}'`
+		kill -9 $pid
+		/home/pi/Documents/DinnerTimePi/startApp
+	;;
+	default)
+		echo "Usage : DinnerTimePi start | stop | restart"
+		exit 1
+	;;
+esac
+
+exit 0
