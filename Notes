@@ -1,6 +1,10 @@
 start at boot:
 
 ------------
+/etc/rc.local
+-> add "/home/pi/Documents/DinnerTimePi/startApp"
+
+------------
 crontab -u pi -e
 -> add "@reboot /home/pi/Documents/DinnerTimePi/startApp"
 
