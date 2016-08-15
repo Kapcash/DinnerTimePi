@@ -34,22 +34,23 @@ public class TimeServer {
 		return instance;
 	}
 
-	protected TimeServer(int pPort){
-		list = new LinkedList<ClientProcessor>();
-		port = pPort;
-		try {
-			server = new ServerSocket(port);
-		} catch (BindException bind){
-			bind.printStackTrace();
-			System.exit(1);
-		} catch (UnknownHostException hoste) {
-			hoste.printStackTrace();
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		} 
-	}
-
 	protected TimeServer(String pHost, int pPort){
+		int i=0;
+		while(++i != 50 && !initServer(pHost, pPort)){
+			try{
+				Thread.sleep(500);
+			}catch(InterruptedException intEx){
+				intEx.printStackTrace();
+			}
+		}
+		if(server == null){
+			System.out.println("Server failed to init. Exit the program.");
+			System.exit(1);
+		}
+	}
+		
+	private boolean initServer(String pHost, int pPort){
+		boolean ret = true;
 		list = new LinkedList<ClientProcessor>();
 		host = pHost;
 		port = pPort;
@@ -57,12 +58,15 @@ public class TimeServer {
 			server = new ServerSocket(port, 10, InetAddress.getByName(host));
 		} catch (BindException bind){
 			bind.printStackTrace();
-			System.exit(1);
+			ret = false;
 		} catch (UnknownHostException hoste) {
 			hoste.printStackTrace();
+			ret = false;
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
-		} 
+			ret = false;
+		}
+		return ret;
 	}
 	
 	//Launch the server
@@ -155,4 +159,5 @@ public class TimeServer {
 			interrupted.printStackTrace();
 		}
 	}   
-}
+}
+
