@@ -1,0 +1,11 @@
+start at boot:
+
+------------
+crontab -u pi -e
+-> add "@reboot /home/pi/Documents/DinnerTimePi/startApp"
+
+------------
+cp DinnerTimeStartServer /etc/init.d/
+update-rc.d DinnerTimeStartServer defaults
+
+

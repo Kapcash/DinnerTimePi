@@ -1,7 +1,9 @@
 JCC = javac
 JAVA = java
+JAR = jar
 
 JFLAGS = -g
+JARFLAGS = -cvfm
 
 CLASSPATH = ./bin
 
@@ -11,26 +13,22 @@ SERVERPATH = ./src/server
 default: ClientAll
 
 # Compiling
-Client:
-		$(JCC) $(JFLAGS) -d $(CLASSPATH) $(CLIENTPATH)/ClientConnexion.java
 
 ClientAll:
 		$(JCC) $(JFLAGS) -d $(CLASSPATH) $(CLIENTPATH)/*.java
-
-Server:
-		$(JCC) $(JFLAGS) -d $(CLASSPATH) $(SERVERPATH)/ClientProcessor.java $(SERVERPATH)/TimeServer.java
-
+		$(JAR) $(JARFLAGS) DinnerTimeClient.jar bin/client/MANIFEST.MF bin/client/*.class data/
 ServerAll:
 		$(JCC) $(JFLAGS) -d $(CLASSPATH) $(SERVERPATH)/*.java
+		$(JAR) $(JARFLAGS) DinnerTimeServer.jar bin/server/MANIFEST.MF bin/server/*.class
 
 all: ClientAll ServerAll
 
 # Running
 runc:
-		$(JAVA) -cp $(CLASSPATH) client.Main_Client
+		$(JAVA) -jar DinnerTimeClient.jar
 
 runs:
-		$(JAVA) -cp $(CLASSPATH) server.Main_Server
+		$(JAVA) -jar DinnerTimeServer.jar
 
 clean: 
 		$(RM) $(CLASSPATH)/server/*.class

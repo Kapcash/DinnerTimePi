@@ -14,9 +14,9 @@ public class ClientProcessor implements Runnable{
 	private BufferedInputStream reader = null;
 
 	private int nb; //The pin number of the current client (from 0 to 3)
-	private int[] gpios = {3,4,5,6}; //Pin numbers used for client LEDS
-	static private String timeToFlash = "60"
-	static private String cmdFlash[] = {"/bin/bash","/home/pi/Documents/DinnerTimePi/src/flashbutton.sh",gpios[nb],timeToFlash};
+	static private int[] gpios = {3,4,5,6}; //Pin numbers used for client LEDS
+	static private String timeToFlash = "60";
+	private String cmdFlash[] = {"/bin/bash","/home/pi/Documents/DinnerTimePi/flashbutton.sh",""+gpios[nb],timeToFlash};
 
 	public ClientProcessor(Socket pSock,int number){
 		sock = pSock;

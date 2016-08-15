@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.net.BindException;
 import java.util.LinkedList;
 import java.util.List;
 import java.io.File;
@@ -17,9 +18,9 @@ public class TimeServer {
 	//Instance of class : can have only one server at a time
 	static private TimeServer instance;
 	//Default values
-	static private int port = 6543;
+	static private int port = 35150;
 	static private String host = "192.168.1.35"; //Adapt for your network, give a fix IP by DHCP
-	static private String cmd[] = {"/bin/bash","/home/pi/Documents/DinnerTimePi/src/button.sh"}; //Command for listening button
+	static private String cmdButton[] = {"/bin/bash","/home/pi/Documents/DinnerTimePi/button.sh"}; //Command for listening button
 	//Variables
 	private ServerSocket server = null;
 	private boolean isRunning = true;
@@ -33,34 +34,43 @@ public class TimeServer {
 		return instance;
 	}
 
-	protected TimeServer(int pPort){
-		list = new LinkedList<ClientProcessor>();
-		port = pPort;
-		try {
-			server = new ServerSocket(port);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+	protected TimeServer(String pHost, int pPort){
+		int i=0;
+		while(++i != 50 && !initServer(pHost, pPort)){
+			try{
+				Thread.sleep(500);
+			}catch(InterruptedException intEx){
+				intEx.printStackTrace();
+			}
+		}
+		if(server == null){
+			System.out.println("Server failed to init. Exit the program.");
+			System.exit(1);
 		}
 	}
-
-	protected TimeServer(String pHost, int pPort){
+		
+	private boolean initServer(String pHost, int pPort){
+		boolean ret = true;
 		list = new LinkedList<ClientProcessor>();
 		host = pHost;
 		port = pPort;
 		try {
 			server = new ServerSocket(port, 10, InetAddress.getByName(host));
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (BindException bind){
+			bind.printStackTrace();
+			ret = false;
+		} catch (UnknownHostException hoste) {
+			hoste.printStackTrace();
+			ret = false;
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+			ret = false;
 		}
+		return ret;
 	}
 	
 	//Launch the server
 	public void open(){
-
 		System.out.println("Serveur initialised at : "+host+" address and : "+port+" port.");
 		//Server loop
 		Thread clientThread = new Thread(new Runnable(){
@@ -94,12 +104,12 @@ public class TimeServer {
 		});
 		clientThread.start();
 
+		//Listening for button
 		Thread buttonThread = new Thread(new Runnable(){
 			public void run(){
 				do{
-					//Listening for button
 					try{
-						Process p_but = Runtime.getRuntime().exec(cmd);
+						Process p_but = Runtime.getRuntime().exec(cmdButton);
 						p_but.waitFor();
 						if((p_but.exitValue() == 1)){
 							System.out.println("[Time to eat !]");
@@ -125,10 +135,15 @@ public class TimeServer {
 		System.out.println("Client "+c.getName()+" disconnected !");
 		list.remove(c);
 	}
+
+	/*public boolean getEnvVariable(){
+		String val = System.getenv("DINNERTIMERUNNING"); //is 'true' or 'false' from startApp script
+		return Boolean.parseBoolean(val);
+	}*/
 	
 	//Close the server
 	public void close(){
-		isRunning = false;
+		System.out.println("Closing server");
 		try{
 			Process p = Runtime.getRuntime().exec("gpio write "+2+" 0");
 			p.waitFor();
@@ -145,3 +160,4 @@ public class TimeServer {
 		}
 	}   
 }
+

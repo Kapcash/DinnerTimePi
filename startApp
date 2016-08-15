@@ -1,0 +1,8 @@
+#! /bin/sh
+
+cd /home/pi/Documents/DinnerTimePi/
+
+date >> testStart.txt
+java -jar DinnerTimeServer.jar
+
+exit 0
