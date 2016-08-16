@@ -9,26 +9,34 @@ CLASSPATH = ./bin
 
 CLIENTPATH = ./src/client
 SERVERPATH = ./src/server
+COMMONPATH = ./src/common
 
-default: ClientAll
+default: all
 
 # Compiling
 
-ClientAll:
-		$(JCC) $(JFLAGS) -d $(CLASSPATH) $(CLIENTPATH)/*.java
-		$(JAR) $(JARFLAGS) DinnerTimeClient.jar bin/client/MANIFEST.MF bin/client/*.class data/
-ServerAll:
-		$(JCC) $(JFLAGS) -d $(CLASSPATH) $(SERVERPATH)/*.java
-		$(JAR) $(JARFLAGS) DinnerTimeServer.jar bin/server/MANIFEST.MF bin/server/*.class
+common:
+		$(JCC) $(JFLAGS) -cp $(CLASSPATH) $(COMMONPATH)/*.java
 
-all: ClientAll ServerAll
+clientAll:
+		$(JCC) $(JFLAGS) -cp $(CLASSPATH) $(CLIENTPATH)/*.java
+		$(JAR) $(JARFLAGS) DinnerTimeClient.jar bin/client/MANIFEST.MF bin/client/*.class bin/common/*.class data/
+
+serverAll:
+		$(JCC) $(JFLAGS) -cp $(CLASSPATH) $(SERVERPATH)/*.java
+		$(JAR) $(JARFLAGS) DinnerTimeServer.jar bin/server/MANIFEST.MF bin/server/*.class bin/common/*.class
+
+all: common clientAll serverAll
 
 # Running
+
 runc:
 		$(JAVA) -jar DinnerTimeClient.jar
 
 runs:
 		$(JAVA) -jar DinnerTimeServer.jar
+
+# Cleaning
 
 clean: 
 		$(RM) $(CLASSPATH)/server/*.class
