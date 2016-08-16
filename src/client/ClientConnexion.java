@@ -21,6 +21,12 @@ import javax.swing.JWindow;
 
 import static common.Constants.*;
 
+
+/**
+ * @author Kapcash
+ * This class is the main client process, running on the client machine.
+ * It displays notifications, play sound etc. It is the connexion with the server.
+ */
 public class ClientConnexion implements Runnable, ActionListener{
 
 	// Objects

@@ -6,18 +6,39 @@ import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import static common.Constants.*;
 
+/**
+ * @author Kapcash
+ * This class is used to run the behavior of the Raspberry Pi according to the client answers (Turning on LEDs most of the time).
+ */
 public class ClientProcessor implements Runnable{
 
 	private Socket sock;
 	private PrintWriter writer = null;
 	private BufferedInputStream reader = null;
 
-	private int nb; //The pin number of the current client (from 0 to 3)
-	static private int[] gpios = {3,4,5,6}; //Pin numbers used for client LEDS
-	static private String timeToFlash = "60";
-	private String cmdFlash[] = {"/bin/bash","/home/pi/Documents/DinnerTimePi/flashbutton.sh",""+gpios[nb],timeToFlash};
+	/**
+	 * The pin number of the current client (from 0 to 3)
+	 */
+	private int nb;
+	/**
+	 * Pin numbers used for client LEDS
+	 */
+	static private int[] gpios = {3,4,5,6}; 
+	/**
+	 * Number of seconds the LED has to be ON.
+	 */
+	static private String timeOn = "60";
+	/**
+	 * Path to the command for flashing a LED
+	 */
+	private String cmdFlash[] = {"/bin/bash","/home/pi/Documents/DinnerTimePi/flashbutton.sh",""+gpios[nb],timeOn};
 
+	/**
+	 * @param pSock The socket connected to the client
+	 * @param number The client number, between 1 and 4
+	 */
 	public ClientProcessor(Socket pSock,int number){
 		sock = pSock;
 		nb=number;
@@ -28,6 +49,9 @@ public class ClientProcessor implements Runnable{
 		}
 	}
 
+	/**
+	 * Launch the client process which execute the client answer on the LEDs.
+	 */
 	public void run(){
 		boolean closeConnexion = false;
 		while(!sock.isClosed()){
@@ -39,18 +63,18 @@ public class ClientProcessor implements Runnable{
 				InetSocketAddress remote = (InetSocketAddress)sock.getRemoteSocketAddress();
 				System.out.print("[");
 				switch(response.toUpperCase()){
-				case "OK":
-					System.out.print("OK");
+				case getCommands()[0]:
+					System.out.print(getCommands()[1]);
 					Thread t = new Thread(new Runnable(){
 							public void run(){
 								try{
 									//Turn on the LED of this client (from nb)
 									Process p = Runtime.getRuntime().exec("gpio write "+gpios[nb]+" 1");
 									p.waitFor();
-									Thread.sleep(60000); // 1 min
+									Thread.sleep(timeOn*1000); // 1 min
 									// Turn off LED
 									p = Runtime.getRuntime().exec("gpio write "+gpios[nb]+" 0");
-									p.waitFor();	
+									p.waitFor();
 								} catch(InterruptedException e){
 									e.printStackTrace();
 								}catch(IOException e){
@@ -60,16 +84,16 @@ public class ClientProcessor implements Runnable{
 						});
 					t.start();
 					break;
-				case "2MIN":
+				case getCommands()[1]:
 					Process proc_mode = Runtime.getRuntime().exec(cmdFlash);
-					System.out.print("2MIN");
+					System.out.print(getCommands()[1]);
 					break;
-				case "NO":
+				case getCommands()[2]:
 					//TODO
-					System.out.print("NO");
+					System.out.print(getCommands()[2]);
 					break;
-				case "CLOSE":
-					System.out.print("CLOSE");
+				case getCommands()[3]:
+					System.out.print(getCommands()[3]);
 					closeConnexion = true;
 					break;
 				default: 
@@ -77,8 +101,9 @@ public class ClientProcessor implements Runnable{
 				}
 				System.out.println("] received from "+getName()+".");
 
+				// Close the connexion between the server and the client
 				if(closeConnexion){
-					System.err.println("Closing connexion with "+this.getName()+".");
+					System.err.println("Closing connexion with "+getName()+".");
 					TimeServer.closeClient(this);
 					writer = null;
 					reader = null;
@@ -94,16 +119,25 @@ public class ClientProcessor implements Runnable{
 		}
 	}
 
+	/**
+	 * @return Return the name of the client
+	 */
 	public String getName(){
 		return sock.getInetAddress().getHostName();
 	}
 	
+	/**
+	 * Send the server question to this client
+	 */
 	public void timeToEat(){
-		writer.write("[Time to eat !]");
+		writer.write(getServerQuestion());
 		writer.flush();
 	}
 	
-	//Read client answers
+	/**
+	 * Read client answers
+	 * @return Return the response of the server
+	 */
 	private String read() throws IOException{      
 		String response = "";
 		int stream;

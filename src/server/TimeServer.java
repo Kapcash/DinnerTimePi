@@ -15,6 +15,10 @@ import static common.Constants.*;
 
 import javax.swing.JFrame;
 
+/**
+ * @author Kapcash
+ * This class is the server application. It connect all the clients and treat the sockets answers between them.
+ */
 public class TimeServer {
 	/**
 	 * Instance of class : can have only one server at a time
