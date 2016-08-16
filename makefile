@@ -36,6 +36,9 @@ runc:
 runs:
 		$(JAVA) -jar DinnerTimeServer.jar
 
+doc:
+		javadoc -d ./data/doc -sourcepath ./src/ -private client server common
+
 # Cleaning
 
 clean: 
