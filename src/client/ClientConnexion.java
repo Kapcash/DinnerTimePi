@@ -19,21 +19,43 @@ import javax.sound.sampled.*;
 import javax.swing.JButton;
 import javax.swing.JWindow;
 
+import static common.Constants.*;
+
 public class ClientConnexion implements Runnable, ActionListener{
 
+	// Objects
 	private Socket connexion = null;
 	private PrintWriter writer = null;
 	private BufferedInputStream reader = null;
 
+	// Constants
+	
+	/**
+	 * The path to the notification sound file. Only .wav file can be played !
+	 */
 	private static final String notifSoundPath = "data/sounds/NotifTime.wav";
+	/**
+	 * The array containing the possible client answers.
+	 */
+	private String[] listCommands = getCommands();
 
-	private String[] listCommands = {"OK", "2MIN", "NO", "CLOSE"};
-	private static int count = 0;
-	private String name = "Client-";
+	// GUI
 	private JButton ok,min,no;
 	private JWindow window;
-	private double width, height;
 	private int taskBarHeight;
+	
+	/**
+	 * Number of local clients connected
+	 */
+	private static int count = 0;
+	private String name = "Client-";
+	/**
+	 * Dimensions of the screen.
+	 */
+	private double width, height;
+	/**
+	 * True if the notification is shown on the screen.
+	 */
 	private boolean displayed;
 
 	public ClientConnexion(String host, int port){
@@ -42,9 +64,9 @@ public class ClientConnexion implements Runnable, ActionListener{
 
 		/* Init notification window */
 		window = new JWindow();
-		ok = new JButton("OK");
-		min = new JButton("2Min");
-		no = new JButton("NO");
+		ok = new JButton(listCommands[0]);
+		min = new JButton(listCommands[0]);
+		no = new JButton(listCommands[0]);
 		ok.addActionListener(this);
 		min.addActionListener(this);
 		no.addActionListener(this);
@@ -53,10 +75,10 @@ public class ClientConnexion implements Runnable, ActionListener{
 		window.add(min);
 		window.add(no);
 		
+		// Getting screen dimensions
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		width = screenSize.getWidth();
 		height = screenSize.getHeight();
-		
 		Rectangle winSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
 		taskBarHeight = (int) height - winSize.height;
 		
@@ -65,6 +87,7 @@ public class ClientConnexion implements Runnable, ActionListener{
 		window.setLocation((int)width, (int)(height-50-taskBarHeight-25));
 		/* ------------------------ */
 		
+		/*  */
 		try {
 			connexion = new Socket(host, port);
 		} catch (UnknownHostException e) {
@@ -77,6 +100,9 @@ public class ClientConnexion implements Runnable, ActionListener{
 		}
 	}
 
+	/**
+	 * Launch the client connexion. Wait for the server response.
+	 */
 	public void run(){
 		for(int i =0; i < 10; i++){
 			try {
@@ -103,12 +129,14 @@ public class ClientConnexion implements Runnable, ActionListener{
 		writer.close();
 	}
 
+	/**
+	 * Display the  GUI notification, asking the user for an answer
+	 */
 	private void displayNotification() {
-		//TODO : check if notification not already displayed
 		if(!displayed){
 			displayed = true;
 			System.out.println("Notification displayed");
-			playSound();
+			playSound(new File(notifSoundPath));
 			window.setVisible(true);
 			//Animation
 			for(int i=0;i<250;i++){
@@ -122,13 +150,15 @@ public class ClientConnexion implements Runnable, ActionListener{
 				window.repaint();
 			}
 		}else{
-			System.out.println("Notification NOT displayed");
+			System.out.println("Notification NOT displayed : already exisiting");
 		}
 	}
 
-	private void playSound(){
+	/**
+	 * @param soundFile .wav file to play
+	 */
+	private void playSound(File soundFile){
 		try{
-			File soundFile = new File(notifSoundPath);
 			AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
 			Clip clip = AudioSystem.getClip();
 			clip.open(audioIn);
@@ -142,6 +172,10 @@ public class ClientConnexion implements Runnable, ActionListener{
 		}
 	}
 
+	/**
+	 * Read the server response
+	 * @return Return the String answer of the server.
+	 */
 	private String read() throws IOException{      
 		String response = "";
 		int stream;
@@ -156,6 +190,10 @@ public class ClientConnexion implements Runnable, ActionListener{
 		return response;
 	}
 	
+	/**
+	 * Send a specific answer to the server.
+	 * @param command The command to send to the server, included in the 'listCommand' array.
+	 */
 	private void send(String command){
 		writer.write(command);
 		writer.flush();

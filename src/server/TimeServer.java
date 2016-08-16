@@ -11,21 +11,32 @@ import java.net.BindException;
 import java.util.LinkedList;
 import java.util.List;
 import java.io.File;
+import static common.Constants.*;
 
 import javax.swing.JFrame;
 
 public class TimeServer {
-	//Instance of class : can have only one server at a time
+	/**
+	 * Instance of class : can have only one server at a time
+	 */
 	static private TimeServer instance;
 	//Default values
-	static private int port = 35150;
-	static private String host = "192.168.1.35"; //Adapt for your network, give a fix IP by DHCP
-	static private String cmdButton[] = {"/bin/bash","/home/pi/Documents/DinnerTimePi/button.sh"}; //Command for listening button
+	static private String[] cmdButton = {"/bin/bash","/home/pi/Documents/DinnerTimePi/button.sh"}; //Command for listening button
 	//Variables
 	private ServerSocket server = null;
 	private boolean isRunning = true;
 	static private List<ClientProcessor> list;
+
+	static private String host;
+	static private int port;
+	/**
+	 * Number of second between two button push
+	 */
 	static final private int secondsBetweenPush = 30;
+	/**
+	 * How many time the server has to try to connect if doesn't success the first time
+	 */
+	private static final int nbOfTry = 50;
 
 	static public TimeServer getInstance(){
 		if(instance == null){
@@ -34,9 +45,13 @@ public class TimeServer {
 		return instance;
 	}
 
+	/**
+	 * @param pHost The string IP representation. Should be the current IP of the local machine on the network.
+	 * @param pPort The port used by the server.
+	 */
 	protected TimeServer(String pHost, int pPort){
 		int i=0;
-		while(++i != 50 && !initServer(pHost, pPort)){
+		while(++i != nbOfTry && !initServer(pHost, pPort)){
 			try{
 				Thread.sleep(500);
 			}catch(InterruptedException intEx){
@@ -44,11 +59,17 @@ public class TimeServer {
 			}
 		}
 		if(server == null){
-			System.out.println("Server failed to init. Exit the program.");
+			System.out.println("Server failed to init. Exiting the program.");
 			System.exit(1);
 		}
 	}
-		
+	
+	/**
+	 * Initialize the server with the given parameters
+	 * @param pHost The string IP representation. Should be the current IP of the local machine on the network.
+	 * @param pPort The port used by the server.
+	 * @return Return true if the server succeded to connect, false else
+	 */
 	private boolean initServer(String pHost, int pPort){
 		boolean ret = true;
 		list = new LinkedList<ClientProcessor>();
@@ -69,7 +90,9 @@ public class TimeServer {
 		return ret;
 	}
 	
-	//Launch the server
+	/**
+	 * Launch the server. Receive client connexions.
+	 */
 	public void open(){
 		System.out.println("Serveur initialised at : "+host+" address and : "+port+" port.");
 		//Server loop
@@ -112,7 +135,7 @@ public class TimeServer {
 						Process p_but = Runtime.getRuntime().exec(cmdButton);
 						p_but.waitFor();
 						if((p_but.exitValue() == 1)){
-							System.out.println("[Time to eat !]");
+							System.out.println(getServerQuestion());
 							for(ClientProcessor c : list){
 								c.timeToEat();
 							}
@@ -130,18 +153,18 @@ public class TimeServer {
 		buttonThread.start();
 	}
 
-	//Client disconned
+	/**
+	 * Close the connexion between the server and the given client
+	 * @param c The client to close
+	 */
 	static public void closeClient(ClientProcessor c){
 		System.out.println("Client "+c.getName()+" disconnected !");
 		list.remove(c);
 	}
-
-	/*public boolean getEnvVariable(){
-		String val = System.getenv("DINNERTIMERUNNING"); //is 'true' or 'false' from startApp script
-		return Boolean.parseBoolean(val);
-	}*/
 	
-	//Close the server
+	/**
+	 * Close entirely the server. Reset all the gpios LED.
+	 */
 	public void close(){
 		System.out.println("Closing server");
 		try{
