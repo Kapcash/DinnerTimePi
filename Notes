@@ -1,4 +1,4 @@
-start at boot:
+Start at boot:
 
 ------------
 /etc/rc.local
@@ -13,3 +13,5 @@ cp DinnerTimeStartServer /etc/init.d/
 update-rc.d DinnerTimeStartServer defaults
 
 
+gpio library :
+https://projects.drogon.net/raspberry-pi/wiringpi/download-and-install/
