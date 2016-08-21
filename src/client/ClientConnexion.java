@@ -1,11 +1,6 @@
 package client;
 
-import java.awt.Dimension;
-import java.awt.GraphicsEnvironment;
-import java.awt.GridLayout;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
@@ -18,6 +13,8 @@ import javax.sound.sampled.*;
 
 import javax.swing.JButton;
 import javax.swing.JWindow;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import static common.Constants.*;
 
@@ -68,32 +65,16 @@ public class ClientConnexion implements Runnable, ActionListener{
 		name += ++count;
 		displayed = false;
 
-		/* Init notification window */
-		window = new JWindow();
-		ok = new JButton(listCommands[0]);
-		min = new JButton(listCommands[0]);
-		no = new JButton(listCommands[0]);
-		ok.addActionListener(this);
-		min.addActionListener(this);
-		no.addActionListener(this);
-		window.setLayout(new GridLayout(1,3));
-		window.add(ok);
-		window.add(min);
-		window.add(no);
-		
 		// Getting screen dimensions
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		width = screenSize.getWidth();
 		height = screenSize.getHeight();
 		Rectangle winSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
 		taskBarHeight = (int) height - winSize.height;
-		
-		window.pack();
-		window.setSize(new Dimension(250,50));
-		window.setLocation((int)width, (int)(height-50-taskBarHeight-25));
-		/* ------------------------ */
-		
-		/*  */
+	
+		initNotificationGUI();
+
+		/*
 		try {
 			connexion = new Socket(host, port);
 		} catch (UnknownHostException e) {
@@ -103,7 +84,7 @@ public class ClientConnexion implements Runnable, ActionListener{
 			System.out.println("The Server is not running.");
 			//TODO : Display the error frame
 			//e.printStackTrace();
-		}
+		}*/
 	}
 
 	/**
@@ -135,10 +116,39 @@ public class ClientConnexion implements Runnable, ActionListener{
 		writer.close();
 	}
 
+	private void initNotificationGUI(){
+		/* Init notification window */
+		window = new JWindow();
+		
+		ok = new JButton(listCommands[0]);
+		min = new JButton(listCommands[1]);
+		no = new JButton(listCommands[2]);
+		ok.addActionListener(this);
+		min.addActionListener(this);
+		no.addActionListener(this);
+
+		JPanel buttonsPanel = new JPanel();
+		
+		buttonsPanel.setLayout(new GridLayout(1,3));
+		buttonsPanel.add(ok);
+		buttonsPanel.add(min);
+		buttonsPanel.add(no);
+
+		JPanel closePanel = new JPanel();
+		closePanel.add(new JLabel("Close"));
+
+		window.setLayout(new BorderLayout());
+		window.add(buttonsPanel,BorderLayout.CENTER);
+		window.add(closePanel,BorderLayout.SOUTH);
+		window.setSize(new Dimension(250,50));
+		window.pack();
+		window.setLocation((int)width, (int)(height-50-taskBarHeight-25));
+	}
+
 	/**
 	 * Display the  GUI notification, asking the user for an answer
 	 */
-	private void displayNotification() {
+	public void displayNotification() {
 		if(!displayed){
 			displayed = true;
 			System.out.println("Notification displayed");

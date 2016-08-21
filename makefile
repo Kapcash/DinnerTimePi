@@ -19,11 +19,11 @@ common:
 		$(JCC) $(JFLAGS) -cp $(CLASSPATH) $(COMMONPATH)/*.java
 
 clientAll:
-		$(JCC) $(JFLAGS) -cp $(CLASSPATH) $(CLIENTPATH)/*.java
-		$(JAR) $(JARFLAGS) DinnerTimeClient.jar bin/client/MANIFEST.MF bin/client/*.class bin/common/*.class data/
+		$(JCC) $(JFLAGS) -d $(CLASSPATH) -cp $(CLASSPATH) $(CLIENTPATH)/*.java
+		$(JAR) $(JARFLAGS) DinnerTimeClient.jar bin/client/MANIFEST.MF bin/client/*.class bin/common/*.class
 
 serverAll:
-		$(JCC) $(JFLAGS) -cp $(CLASSPATH) $(SERVERPATH)/*.java
+		$(JCC) $(JFLAGS) -d $(CLASSPATH) -cp $(CLASSPATH) $(SERVERPATH)/*.java
 		$(JAR) $(JARFLAGS) DinnerTimeServer.jar bin/server/MANIFEST.MF bin/server/*.class bin/common/*.class
 
 all: common clientAll serverAll
