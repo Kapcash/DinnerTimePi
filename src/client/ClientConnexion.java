@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.File;
@@ -24,7 +26,7 @@ import static common.Constants.*;
  * This class is the main client process, running on the client machine.
  * It displays notifications, play sound etc. It is the connexion with the server.
  */
-public class ClientConnexion implements Runnable, ActionListener{
+public class ClientConnexion extends MouseAdapter implements Runnable, ActionListener{
 
 	// Objects
 	private Socket connexion = null;
@@ -44,6 +46,7 @@ public class ClientConnexion implements Runnable, ActionListener{
 
 	// GUI
 	private JButton ok,min,no;
+	private JLabel close;
 	private JWindow window;
 	private int taskBarHeight;
 	
@@ -123,9 +126,11 @@ public class ClientConnexion implements Runnable, ActionListener{
 		ok = new JButton(listCommands[0]);
 		min = new JButton(listCommands[1]);
 		no = new JButton(listCommands[2]);
+		close = new JLabel("Close");
 		ok.addActionListener(this);
 		min.addActionListener(this);
 		no.addActionListener(this);
+		close.addMouseListener(this);
 
 		JPanel buttonsPanel = new JPanel();
 		
@@ -135,7 +140,7 @@ public class ClientConnexion implements Runnable, ActionListener{
 		buttonsPanel.add(no);
 
 		JPanel closePanel = new JPanel();
-		closePanel.add(new JLabel("Close"));
+		closePanel.add(close);
 
 		window.setLayout(new BorderLayout());
 		window.add(buttonsPanel,BorderLayout.CENTER);
@@ -168,6 +173,12 @@ public class ClientConnexion implements Runnable, ActionListener{
 		}else{
 			System.out.println("Notification NOT displayed : already exisiting");
 		}
+	}
+
+	private void hideNotification(){
+		window.setVisible(false);
+		displayed = false;
+		window.setLocation((int)width, (int)(height-50-taskBarHeight-25));
 	}
 
 	/**
@@ -228,8 +239,13 @@ public class ClientConnexion implements Runnable, ActionListener{
 		else if(src == no){
 			send("NO");
 		}
-		window.setVisible(false);
-		displayed = false;
-		window.setLocation((int)width, (int)(height-50-taskBarHeight-25));
+		hideNotification();
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e){
+		Object src = e.getSource();
+
+		hideNotification();
 	}
 }
