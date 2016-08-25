@@ -171,14 +171,19 @@ public class ClientConnexion extends MouseAdapter implements Runnable, ActionLis
 				window.repaint();
 			}
 		}else{
-			System.out.println("Notification NOT displayed : already exisiting");
+			System.err.println("[ERR] Notification already displayed");
 		}
 	}
 
 	private void hideNotification(){
-		window.setVisible(false);
-		displayed = false;
-		window.setLocation((int)width, (int)(height-50-taskBarHeight-25));
+		if(displayed){
+			System.out.println("Notification hidden");
+			window.setVisible(false);
+			displayed = false;
+			window.setLocation((int)width, (int)(height-50-taskBarHeight-25));
+		}else{
+			System.err.println("[ERR] Notification already hidden");
+		}
 	}
 
 	/**
