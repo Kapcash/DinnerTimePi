@@ -17,6 +17,9 @@ import javax.swing.JButton;
 import javax.swing.JWindow;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 
 import static common.Constants.*;
 
@@ -46,10 +49,11 @@ public class ClientConnexion extends MouseAdapter implements Runnable, ActionLis
 
 	// GUI
 	private JButton ok,min,no;
-	private JLabel close;
+	private JLabel close,connect;
 	private JWindow window;
 	private int taskBarHeight;
-	
+	private TrayIcon trayIcon;
+
 	/**
 	 * Number of local clients connected
 	 */
@@ -120,34 +124,67 @@ public class ClientConnexion extends MouseAdapter implements Runnable, ActionLis
 	}
 
 	private void initNotificationGUI(){
+
+		 if (!SystemTray.isSupported()) {
+            System.out.println("SystemTray is not supported on this device");
+            return;
+        }
+        BufferedImage img = null;
+        Image dinnerIcon = null;
+		try {
+    		dinnerIcon = ImageIO.read(new File("data/img/clock-1.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        trayIcon = new TrayIcon(dinnerIcon, "DinnerTimePi");
+        trayIcon.setImageAutoSize(true);
+        SystemTray tray = SystemTray.getSystemTray();
+
+
+        try {
+            tray.add(trayIcon);
+        } catch (AWTException e) {
+            System.out.println("TrayIcon could not be added.");
+        }
+
 		/* Init notification window */
 		window = new JWindow();
-		
+		window.setMinimumSize(new Dimension(300,180));
+		window.setPreferredSize(new Dimension(300,180));
+		JPanel north = new JPanel();
+		north.setBackground(new Color(245,245,245));
+		north.setMaximumSize(new Dimension(300,30));
+		JPanel south = new JPanel();
+		south.setBackground(new Color(245,245,245));
+		south.setMaximumSize(new Dimension(300,30));
+		JPanel logs = new JPanel();
+		JScrollPane scroll = new JScrollPane(logs);
+
+		window.setLayout(new BorderLayout());
+
 		ok = new JButton(listCommands[0]);
 		min = new JButton(listCommands[1]);
 		no = new JButton(listCommands[2]);
 		close = new JLabel("Close");
+		connect = new JLabel("Connected");
+
 		ok.addActionListener(this);
 		min.addActionListener(this);
 		no.addActionListener(this);
 		close.addMouseListener(this);
+		trayIcon.addActionListener(this);
 
-		JPanel buttonsPanel = new JPanel();
-		
-		buttonsPanel.setLayout(new GridLayout(1,3));
-		buttonsPanel.add(ok);
-		buttonsPanel.add(min);
-		buttonsPanel.add(no);
+		north.add(connect);
+		south.add(close);
+		logs.add(ok);
+		logs.add(min);
+		logs.add(no);
 
-		JPanel closePanel = new JPanel();
-		closePanel.add(close);
-
-		window.setLayout(new BorderLayout());
-		window.add(buttonsPanel,BorderLayout.CENTER);
-		window.add(closePanel,BorderLayout.SOUTH);
-		window.setSize(new Dimension(250,50));
+		window.add(north, BorderLayout.NORTH);
+		window.add(south,BorderLayout.SOUTH);
+		window.add(scroll,BorderLayout.CENTER);
 		window.pack();
-		window.setLocation((int)width, (int)(height-50-taskBarHeight-25));
+		//window.setLocation((int)width, (int)(height-50-taskBarHeight-25));
 	}
 
 	/**
@@ -159,19 +196,8 @@ public class ClientConnexion extends MouseAdapter implements Runnable, ActionLis
 			System.out.println("Notification displayed");
 			playSound(new File(notifSoundPath));
 			window.setVisible(true);
-			//Animation
-			for(int i=0;i<250;i++){
-				Point loc = window.getLocation();
-				window.setLocation(--loc.x, loc.y);
-				try {
-					Thread.sleep(1);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				window.repaint();
-			}
 		}else{
-			System.err.println("[ERR] Notification already displayed");
+			System.out.println("[ERR] Notification already displayed");
 		}
 	}
 
@@ -182,7 +208,7 @@ public class ClientConnexion extends MouseAdapter implements Runnable, ActionLis
 			displayed = false;
 			window.setLocation((int)width, (int)(height-50-taskBarHeight-25));
 		}else{
-			System.err.println("[ERR] Notification already hidden");
+			System.out.println("[ERR] Notification already hidden");
 		}
 	}
 
@@ -237,14 +263,19 @@ public class ClientConnexion extends MouseAdapter implements Runnable, ActionLis
 		Object src = e.getSource();
 		if(src == ok){
 			send("OK");
+			hideNotification();
 		}
 		else if(src == min){
 			send("2MIN");
+			hideNotification();
 		}
 		else if(src == no){
 			send("NO");
+			hideNotification();
 		}
-		hideNotification();
+		else if(src == trayIcon){
+			displayNotification();
+		}
 	}
 
 	@Override
