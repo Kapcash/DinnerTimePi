@@ -13,13 +13,11 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import javax.sound.sampled.*;
 
-import javax.swing.JButton;
-import javax.swing.JWindow;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import javax.swing.*;
+
+import org.jdesktop.swingx.border.DropShadowBorder;
 
 import static common.Constants.*;
 
@@ -50,7 +48,7 @@ public class ClientConnexion extends MouseAdapter implements Runnable, ActionLis
 	// GUI
 	private JButton ok,min,no;
 	private JLabel close,connect;
-	private JWindow window;
+	private JFrame window;
 	private int taskBarHeight;
 	private TrayIcon trayIcon;
 
@@ -123,6 +121,22 @@ public class ClientConnexion extends MouseAdapter implements Runnable, ActionLis
 		writer.close();
 	}
 
+	 public void removeMinMaxClose(Component comp)
+  {
+    if(comp instanceof AbstractButton)
+    {
+      comp.getParent().remove(comp);
+    }
+    if (comp instanceof Container)
+    {
+      Component[] comps = ((Container)comp).getComponents();
+      for(int x = 0, y = comps.length; x < y; x++)
+      {
+        removeMinMaxClose(comps[x]);
+      }
+    }
+  }
+
 	private void initNotificationGUI(){
 
 		 if (!SystemTray.isSupported()) {
@@ -148,7 +162,9 @@ public class ClientConnexion extends MouseAdapter implements Runnable, ActionLis
         }
 
 		/* Init notification window */
-		window = new JWindow();
+		window = new JFrame();
+		window.setUndecorated(true);
+		window.getRootPane().setBorder(new DropShadowBorder(Color.BLACK,5,.4f,10,true,true,true,true));
 		window.setMinimumSize(new Dimension(300,180));
 		window.setPreferredSize(new Dimension(300,180));
 		JPanel north = new JPanel();
@@ -180,11 +196,11 @@ public class ClientConnexion extends MouseAdapter implements Runnable, ActionLis
 		logs.add(min);
 		logs.add(no);
 
-		window.add(north, BorderLayout.NORTH);
-		window.add(south,BorderLayout.SOUTH);
-		window.add(scroll,BorderLayout.CENTER);
+		window.getContentPane().add(north, BorderLayout.NORTH);
+		window.getContentPane().add(south,BorderLayout.SOUTH);
+		window.getContentPane().add(scroll,BorderLayout.CENTER);
 		window.pack();
-		//window.setLocation((int)width, (int)(height-50-taskBarHeight-25));
+		window.setLocation((int)width-300, (int)(height-180-taskBarHeight-5));
 	}
 
 	/**
@@ -206,7 +222,7 @@ public class ClientConnexion extends MouseAdapter implements Runnable, ActionLis
 			System.out.println("Notification hidden");
 			window.setVisible(false);
 			displayed = false;
-			window.setLocation((int)width, (int)(height-50-taskBarHeight-25));
+			window.setLocation((int)width-300, (int)(height-180-taskBarHeight-5));
 		}else{
 			System.out.println("[ERR] Notification already hidden");
 		}
