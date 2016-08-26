@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.AdjustmentEvent;
 
+import static common.Constants.getScaledImageIcon;
+
 public class MainView{
 
 	// GUI
@@ -94,11 +96,6 @@ public class MainView{
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); 
 
-
-		/*ok = new JButton(listCommands[0]);
-		min = new JButton(listCommands[1]);
-		no = new JButton(listCommands[2]);*/
-
 		close = new JLabel("Close");
 		close.setToolTipText("Disconnect DinnerTime");
 
@@ -136,10 +133,6 @@ public class MainView{
 
 		south.add(close);
 
-		/*logs.add(ok);
-		logs.add(min);
-		logs.add(no);*/
-
 		Container contentPane = window.getContentPane();
 		contentPane.add(north, BorderLayout.NORTH);
 		contentPane.add(scroll,BorderLayout.CENTER);
@@ -156,12 +149,6 @@ public class MainView{
 		logout.addMouseListener(controller);
 		trayIcon.addActionListener(controller);
 		scroll.getVerticalScrollBar().addAdjustmentListener(controller);
-	}
-
-	private ImageIcon getScaledImageIcon(ImageIcon srcImg, int w, int h){
-    	Image image = srcImg.getImage();
-		Image newimg = image.getScaledInstance(w, h, java.awt.Image.SCALE_SMOOTH); 
-		return new ImageIcon(newimg);
 	}
 
 	/**
@@ -189,14 +176,9 @@ public class MainView{
 	}
 
 	public void addLog(){
-		JPanel newLog = new JPanel();
-		newLog.setMinimumSize(new Dimension(272,45));
-		newLog.setPreferredSize(new Dimension(272,45));
-		newLog.setMaximumSize(new Dimension(272,45));
-		newLog.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-		newLog.add(new JLabel("LOG "+(i++)));
+		
 
-		logs.add(newLog);
+		logs.add(new LogPanel("Test",getScaledImageIcon(new ImageIcon("data/img/reload.png"),20,20)));
 		scroll.revalidate();
 	}
 

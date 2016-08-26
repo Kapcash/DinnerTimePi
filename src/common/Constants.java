@@ -1,5 +1,12 @@
 package common;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import java.awt.Image;
+import javax.sound.sampled.*;
+import java.io.IOException;
+import java.io.File;
+
 public class Constants{
 	
 	private static final String[] listCommands = {"OK", "2 MIN", "NO", "CLOSE"};
@@ -12,4 +19,28 @@ public class Constants{
 	public static String getServerQuestion(){ return serverQuestion; }
 	public static int getPort(){ return port; }
 	public static String getHost(){ return host; }
+
+	public static ImageIcon getScaledImageIcon(ImageIcon srcImg, int w, int h){
+    	Image image = srcImg.getImage();
+		Image newimg = image.getScaledInstance(w, h, java.awt.Image.SCALE_SMOOTH); 
+		return new ImageIcon(newimg);
+	}
+
+	/**
+	 * @param soundFile .wav file to play
+	 */
+	public static void playSound(File soundFile){
+		try{
+			AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioIn);
+			clip.start();
+		}catch(IOException io){
+			io.printStackTrace();
+		}catch(LineUnavailableException line){
+			line.printStackTrace();
+		}catch(UnsupportedAudioFileException unsup){
+			unsup.printStackTrace();
+		}
+	}
 }

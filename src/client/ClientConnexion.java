@@ -1,11 +1,6 @@
 package client;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.File;
@@ -13,14 +8,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import javax.sound.sampled.*;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import javax.swing.*;
-
-import org.jdesktop.swingx.border.DropShadowBorder;
-
-import static common.Constants.*;
-
+import static common.Constants.getCommands;
 
 /**
  * @author Kapcash
@@ -106,24 +94,6 @@ public class ClientConnexion implements Runnable{
 
 	public boolean isConnected(){
 		return isConnected;
-	}
-
-	/**
-	 * @param soundFile .wav file to play
-	 */
-	private void playSound(File soundFile){
-		try{
-			AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
-			Clip clip = AudioSystem.getClip();
-			clip.open(audioIn);
-			clip.start();
-		}catch(IOException io){
-			io.printStackTrace();
-		}catch(LineUnavailableException line){
-			line.printStackTrace();
-		}catch(UnsupportedAudioFileException unsup){
-			unsup.printStackTrace();
-		}
 	}
 
 	/**
