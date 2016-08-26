@@ -45,7 +45,7 @@ pins GPIO.
 # Evolutions prévues :
 
 - Installation automatique du client
-- Icone + fenêtre dans le System Tray (Zone de notifications)
-- Nettoyage du code (...)
+- Logs apparaissent vers le bas (inverser le sens d'apparition)
+- Menu de paramètres
 - Boitier imprimé en 3D
 - Compatibilité Android
