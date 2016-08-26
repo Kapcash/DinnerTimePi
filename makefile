@@ -17,7 +17,7 @@ default: all
 # Compiling
 
 common:
-		$(JCC) $(JFLAGS) -cp $(CLASSPATH) $(COMMONPATH)/*.java
+		$(JCC) $(JFLAGS) -d $(CLASSPATH) -cp $(CLASSPATH) $(COMMONPATH)/*.java
 
 clientAll:
 		$(JCC) $(JFLAGS) -d $(CLASSPATH) -cp $(CLASSPATH)\;$(LIBS) $(CLIENTPATH)/*.java
