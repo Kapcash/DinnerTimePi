@@ -33,6 +33,7 @@ public class ClientConnexion extends MouseAdapter implements Runnable, ActionLis
 	private Socket connexion = null;
 	private PrintWriter writer = null;
 	private BufferedInputStream reader = null;
+	private boolean isConnected = false;
 
 	// Constants
 	
@@ -82,6 +83,9 @@ public class ClientConnexion extends MouseAdapter implements Runnable, ActionLis
 		/*
 		try {
 			connexion = new Socket(host, port);
+			if(connexion != null){
+				isConnected = true;
+			}
 		} catch (UnknownHostException e) {
 			System.out.println("UnknownHostException !");
 			//e.printStackTrace();
@@ -169,6 +173,8 @@ public class ClientConnexion extends MouseAdapter implements Runnable, ActionLis
 		window.setPreferredSize(new Dimension(300,180));
 		JPanel north = new JPanel();
 		north.setBackground(new Color(245,245,245));
+		north.setMinimumSize(new Dimension(300,30));
+		north.setPreferredSize(new Dimension(300,30));
 		north.setMaximumSize(new Dimension(300,30));
 		JPanel south = new JPanel();
 		south.setBackground(new Color(245,245,245));
@@ -176,13 +182,24 @@ public class ClientConnexion extends MouseAdapter implements Runnable, ActionLis
 		JPanel logs = new JPanel();
 		JScrollPane scroll = new JScrollPane(logs);
 
+		north.setLayout(new BoxLayout(north,BoxLayout.LINE_AXIS));
 		window.setLayout(new BorderLayout());
 
 		ok = new JButton(listCommands[0]);
 		min = new JButton(listCommands[1]);
 		no = new JButton(listCommands[2]);
 		close = new JLabel("Close");
-		connect = new JLabel("Connected");
+		close.setToolTipText("Disconnect DinnerTime");
+		connect = new JLabel(isConnected ? "Connected" : "Disconnected");
+		ImageIcon gear = getScaledImageIcon(new ImageIcon("data/img/settings.png"),20,20);
+  		ImageIcon error = getScaledImageIcon(new ImageIcon("data/img/error.png"),20,20);
+  		JLabel param = new JLabel(gear);
+  		param.setToolTipText("Settings");
+  		JLabel connectIcon = new JLabel(error);
+  		ImageIcon logout = getScaledImageIcon(new ImageIcon("data/img/logout.png"),20,20);
+  		JLabel disconnect = new JLabel(logout);
+  		disconnect.setToolTipText("Disconnect and close DinnerTime");
+
 
 		ok.addActionListener(this);
 		min.addActionListener(this);
@@ -190,7 +207,15 @@ public class ClientConnexion extends MouseAdapter implements Runnable, ActionLis
 		close.addMouseListener(this);
 		trayIcon.addActionListener(this);
 
+		north.add(Box.createRigidArea(new Dimension(5,5)));
+		north.add(connectIcon);
+		north.add(Box.createRigidArea(new Dimension(5,5)));
 		north.add(connect);
+		north.add(Box.createHorizontalGlue());
+		north.add(disconnect);
+		north.add(Box.createRigidArea(new Dimension(5,5)));
+		north.add(param);
+		north.add(Box.createRigidArea(new Dimension(5,5)));
 		south.add(close);
 		logs.add(ok);
 		logs.add(min);
@@ -200,7 +225,13 @@ public class ClientConnexion extends MouseAdapter implements Runnable, ActionLis
 		window.getContentPane().add(south,BorderLayout.SOUTH);
 		window.getContentPane().add(scroll,BorderLayout.CENTER);
 		window.pack();
-		window.setLocation((int)width-300, (int)(height-180-taskBarHeight-5));
+		window.setLocation((int)width-305, (int)(height-180-taskBarHeight-5));
+	}
+
+	private ImageIcon getScaledImageIcon(ImageIcon srcImg, int w, int h){
+    	Image image = srcImg.getImage();
+		Image newimg = image.getScaledInstance(w, h, java.awt.Image.SCALE_SMOOTH); 
+		return new ImageIcon(newimg);
 	}
 
 	/**
@@ -222,7 +253,7 @@ public class ClientConnexion extends MouseAdapter implements Runnable, ActionLis
 			System.out.println("Notification hidden");
 			window.setVisible(false);
 			displayed = false;
-			window.setLocation((int)width-300, (int)(height-180-taskBarHeight-5));
+			window.setLocation((int)width-305, (int)(height-180-taskBarHeight-5));
 		}else{
 			System.out.println("[ERR] Notification already hidden");
 		}
