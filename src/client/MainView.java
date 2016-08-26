@@ -151,7 +151,7 @@ public class MainView{
 	/**
 	 * Display the  GUI notification, asking the user for an answer
 	 */
-	public void displayNotification() {
+	public void displayGUI() {
 		if(!displayed){
 			displayed = true;
 			System.out.println("Notification displayed");
@@ -162,7 +162,7 @@ public class MainView{
 		}
 	}
 
-	public void hideNotification(){
+	public void hideGUI(){
 		if(displayed){
 			System.out.println("Notification hidden");
 			window.setVisible(false);

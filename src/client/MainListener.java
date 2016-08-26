@@ -32,7 +32,7 @@ public class MainListener extends MouseAdapter implements ActionListener{
 			v.hideNotification();
 		}*/
 		if(src == view.getTrayIcon()){
-			view.displayNotification();
+			view.displayGUI();
 		}
 	}
 
@@ -40,7 +40,7 @@ public class MainListener extends MouseAdapter implements ActionListener{
 	public void mouseClicked(MouseEvent e){
 		Object src = e.getSource();
 
-		view.hideNotification();
+		view.hideGUI();
 	}
 
 }
