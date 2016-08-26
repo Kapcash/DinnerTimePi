@@ -91,7 +91,7 @@ public class ClientConnexion implements Runnable{
 
 				if(response.equals("[Time to eat !]")){ 
 					//TODO : Change checking (if message from server change -> doens't work anymore)
-					this.displayNotification();
+					view.displayGUI();
 				}
 			} catch (IOException e) {
 				System.out.println("The Server is not running anymore.");

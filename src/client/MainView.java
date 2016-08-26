@@ -7,16 +7,20 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import org.jdesktop.swingx.border.DropShadowBorder;
 import java.io.IOException;
+import java.awt.event.AdjustmentListener;
+import java.awt.event.AdjustmentEvent;
 
 public class MainView{
 
 	// GUI
 	private JButton ok,min,no;
-	private JLabel close,connect,disconnect,connectIcon,param;
+	private JLabel close,connect,logout,connectIcon,settings,reload;
 	private JFrame window;
 	private JPanel logs;
 	private TrayIcon trayIcon;
 	private Color panelColor;
+	private JScrollPane scroll;
+	private int i=0;
 
 	/**
 	 * Dimensions of the screen.
@@ -34,7 +38,7 @@ public class MainView{
 		this.client = c;
 		createAndInitGUI();
 		attachReactions();
-		displayNotification();
+		displayGUI();
 	}
 
 	private void createAndInitGUI(){
@@ -85,7 +89,10 @@ public class MainView{
 		south.setMaximumSize(new Dimension(300,30));
 
 		logs = new JPanel();
-		JScrollPane scroll = new JScrollPane(logs);
+		logs.setLayout(new BoxLayout(logs,BoxLayout.PAGE_AXIS));
+		scroll = new JScrollPane(logs);
+		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); 
 
 
 		/*ok = new JButton(listCommands[0]);
@@ -98,28 +105,34 @@ public class MainView{
 		connect = new JLabel(client.isConnected() ? "Connected" : "Disconnected");
 
 		ImageIcon gear = getScaledImageIcon(new ImageIcon("data/img/settings.png"),20,20);
-  		param = new JLabel(gear);
-  		param.setToolTipText("Settings");
+  		settings = new JLabel(gear);
+  		settings.setToolTipText("Settings");
+
+  		ImageIcon loadIcon = getScaledImageIcon(new ImageIcon("data/img/reload.png"),20,20);
+  		reload = new JLabel(loadIcon);
+  		reload.setToolTipText("Retry to connect to the server");
   		
   		ImageIcon error = getScaledImageIcon(new ImageIcon("data/img/error.png"),20,20);
   		connectIcon = new JLabel(error);
 
-  		ImageIcon logout = getScaledImageIcon(new ImageIcon("data/img/logout.png"),20,20);
-  		disconnect = new JLabel(logout);
-  		disconnect.setToolTipText("Disconnect and close DinnerTime");
+  		ImageIcon disconnect = getScaledImageIcon(new ImageIcon("data/img/logout.png"),20,20);
+  		logout = new JLabel(disconnect);
+  		logout.setToolTipText("Disconnect and close DinnerTime");
 		
 		north.setLayout(new BoxLayout(north,BoxLayout.LINE_AXIS));
 		window.setLayout(new BorderLayout());
 
-		north.add(Box.createRigidArea(new Dimension(5,5)));
+		north.add(Box.createRigidArea(new Dimension(7,7)));
 		north.add(connectIcon);
-		north.add(Box.createRigidArea(new Dimension(5,5)));
+		north.add(Box.createRigidArea(new Dimension(7,7)));
 		north.add(connect);
 		north.add(Box.createHorizontalGlue());
-		north.add(disconnect);
-		north.add(Box.createRigidArea(new Dimension(5,5)));
-		north.add(param);
-		north.add(Box.createRigidArea(new Dimension(5,5)));
+		north.add(reload);
+		north.add(Box.createRigidArea(new Dimension(7,7)));
+		north.add(logout);
+		north.add(Box.createRigidArea(new Dimension(7,7)));
+		north.add(settings);
+		north.add(Box.createRigidArea(new Dimension(7,7)));
 
 		south.add(close);
 
@@ -138,8 +151,11 @@ public class MainView{
 
 	private void attachReactions(){
 		MainListener controller = new MainListener(this,client);
+		settings.addMouseListener(controller);
 		close.addMouseListener(controller);
+		logout.addMouseListener(controller);
 		trayIcon.addActionListener(controller);
+		scroll.getVerticalScrollBar().addAdjustmentListener(controller);
 	}
 
 	private ImageIcon getScaledImageIcon(ImageIcon srcImg, int w, int h){
@@ -172,12 +188,43 @@ public class MainView{
 		}
 	}
 
+	public void addLog(){
+		JPanel newLog = new JPanel();
+		newLog.setMinimumSize(new Dimension(272,45));
+		newLog.setPreferredSize(new Dimension(272,45));
+		newLog.setMaximumSize(new Dimension(272,45));
+		newLog.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+		newLog.add(new JLabel("LOG "+(i++)));
+
+		logs.add(newLog);
+		scroll.revalidate();
+	}
+
+	public void scroll(){
+		JScrollBar vertical = scroll.getVerticalScrollBar();
+		vertical.setValue(vertical.getMaximum());
+	}
+
+	/* --- Getters --- */
+
 	public JLabel getCloseLabel(){
 		return close;
 	}
 
 	public TrayIcon getTrayIcon(){
 		return trayIcon;
+	}
+
+	public JLabel getSettingsLabel(){
+		return settings;
+	}
+
+	public JLabel getLogoutLabel(){
+		return logout;
+	}
+
+	public JLabel getReloadLabel(){
+		return reload;
 	}
 
 }

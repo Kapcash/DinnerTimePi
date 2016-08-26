@@ -2,10 +2,12 @@ package client;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentListener;
+import java.awt.event.AdjustmentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class MainListener extends MouseAdapter implements ActionListener{
+public class MainListener extends MouseAdapter implements ActionListener, AdjustmentListener{
 	
 	MainView view;
 	ClientConnexion client;
@@ -39,8 +41,23 @@ public class MainListener extends MouseAdapter implements ActionListener{
 	@Override
 	public void mouseClicked(MouseEvent e){
 		Object src = e.getSource();
+		if(src == view.getSettingsLabel()){
+			view.addLog();
+		}
+		else if(src == view.getReloadLabel()){
+			
+		}
+		else if(src == view.getLogoutLabel()){
 
-		view.hideGUI();
+		}
+		else if(src == view.getCloseLabel()){
+			view.hideGUI();
+		}
 	}
+
+	@Override
+	public void adjustmentValueChanged(AdjustmentEvent e) {  
+        e.getAdjustable().setValue(e.getAdjustable().getMaximum());  
+    }
 
 }
