@@ -27,13 +27,14 @@ import static common.Constants.*;
  * This class is the main client process, running on the client machine.
  * It displays notifications, play sound etc. It is the connexion with the server.
  */
-public class ClientConnexion extends MouseAdapter implements Runnable, ActionListener{
+public class ClientConnexion implements Runnable{
 
 	// Objects
 	private Socket connexion = null;
 	private PrintWriter writer = null;
 	private BufferedInputStream reader = null;
 	private boolean isConnected = false;
+	private MainView view;
 
 	// Constants
 	
@@ -46,39 +47,17 @@ public class ClientConnexion extends MouseAdapter implements Runnable, ActionLis
 	 */
 	private String[] listCommands = getCommands();
 
-	// GUI
-	private JButton ok,min,no;
-	private JLabel close,connect;
-	private JFrame window;
-	private int taskBarHeight;
-	private TrayIcon trayIcon;
-
 	/**
 	 * Number of local clients connected
 	 */
 	private static int count = 0;
 	private String name = "Client-";
-	/**
-	 * Dimensions of the screen.
-	 */
-	private double width, height;
-	/**
-	 * True if the notification is shown on the screen.
-	 */
-	private boolean displayed;
 
 	public ClientConnexion(String host, int port){
 		name += ++count;
-		displayed = false;
+		//displayed = false;
 
-		// Getting screen dimensions
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		width = screenSize.getWidth();
-		height = screenSize.getHeight();
-		Rectangle winSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-		taskBarHeight = (int) height - winSize.height;
-	
-		initNotificationGUI();
+		view = new MainView(this);
 
 		/*
 		try {
@@ -125,138 +104,8 @@ public class ClientConnexion extends MouseAdapter implements Runnable, ActionLis
 		writer.close();
 	}
 
-	 public void removeMinMaxClose(Component comp)
-  {
-    if(comp instanceof AbstractButton)
-    {
-      comp.getParent().remove(comp);
-    }
-    if (comp instanceof Container)
-    {
-      Component[] comps = ((Container)comp).getComponents();
-      for(int x = 0, y = comps.length; x < y; x++)
-      {
-        removeMinMaxClose(comps[x]);
-      }
-    }
-  }
-
-	private void initNotificationGUI(){
-
-		 if (!SystemTray.isSupported()) {
-            System.out.println("SystemTray is not supported on this device");
-            return;
-        }
-        BufferedImage img = null;
-        Image dinnerIcon = null;
-		try {
-    		dinnerIcon = ImageIO.read(new File("data/img/clock-1.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-        trayIcon = new TrayIcon(dinnerIcon, "DinnerTimePi");
-        trayIcon.setImageAutoSize(true);
-        SystemTray tray = SystemTray.getSystemTray();
-
-
-        try {
-            tray.add(trayIcon);
-        } catch (AWTException e) {
-            System.out.println("TrayIcon could not be added.");
-        }
-
-		/* Init notification window */
-		window = new JFrame();
-		window.setUndecorated(true);
-		window.getRootPane().setBorder(new DropShadowBorder(Color.BLACK,5,.4f,10,true,true,true,true));
-		window.setMinimumSize(new Dimension(300,180));
-		window.setPreferredSize(new Dimension(300,180));
-		JPanel north = new JPanel();
-		north.setBackground(new Color(245,245,245));
-		north.setMinimumSize(new Dimension(300,30));
-		north.setPreferredSize(new Dimension(300,30));
-		north.setMaximumSize(new Dimension(300,30));
-		JPanel south = new JPanel();
-		south.setBackground(new Color(245,245,245));
-		south.setMaximumSize(new Dimension(300,30));
-		JPanel logs = new JPanel();
-		JScrollPane scroll = new JScrollPane(logs);
-
-		north.setLayout(new BoxLayout(north,BoxLayout.LINE_AXIS));
-		window.setLayout(new BorderLayout());
-
-		ok = new JButton(listCommands[0]);
-		min = new JButton(listCommands[1]);
-		no = new JButton(listCommands[2]);
-		close = new JLabel("Close");
-		close.setToolTipText("Disconnect DinnerTime");
-		connect = new JLabel(isConnected ? "Connected" : "Disconnected");
-		ImageIcon gear = getScaledImageIcon(new ImageIcon("data/img/settings.png"),20,20);
-  		ImageIcon error = getScaledImageIcon(new ImageIcon("data/img/error.png"),20,20);
-  		JLabel param = new JLabel(gear);
-  		param.setToolTipText("Settings");
-  		JLabel connectIcon = new JLabel(error);
-  		ImageIcon logout = getScaledImageIcon(new ImageIcon("data/img/logout.png"),20,20);
-  		JLabel disconnect = new JLabel(logout);
-  		disconnect.setToolTipText("Disconnect and close DinnerTime");
-
-
-		ok.addActionListener(this);
-		min.addActionListener(this);
-		no.addActionListener(this);
-		close.addMouseListener(this);
-		trayIcon.addActionListener(this);
-
-		north.add(Box.createRigidArea(new Dimension(5,5)));
-		north.add(connectIcon);
-		north.add(Box.createRigidArea(new Dimension(5,5)));
-		north.add(connect);
-		north.add(Box.createHorizontalGlue());
-		north.add(disconnect);
-		north.add(Box.createRigidArea(new Dimension(5,5)));
-		north.add(param);
-		north.add(Box.createRigidArea(new Dimension(5,5)));
-		south.add(close);
-		logs.add(ok);
-		logs.add(min);
-		logs.add(no);
-
-		window.getContentPane().add(north, BorderLayout.NORTH);
-		window.getContentPane().add(south,BorderLayout.SOUTH);
-		window.getContentPane().add(scroll,BorderLayout.CENTER);
-		window.pack();
-		window.setLocation((int)width-305, (int)(height-180-taskBarHeight-5));
-	}
-
-	private ImageIcon getScaledImageIcon(ImageIcon srcImg, int w, int h){
-    	Image image = srcImg.getImage();
-		Image newimg = image.getScaledInstance(w, h, java.awt.Image.SCALE_SMOOTH); 
-		return new ImageIcon(newimg);
-	}
-
-	/**
-	 * Display the  GUI notification, asking the user for an answer
-	 */
-	public void displayNotification() {
-		if(!displayed){
-			displayed = true;
-			System.out.println("Notification displayed");
-			playSound(new File(notifSoundPath));
-			window.setVisible(true);
-		}else{
-			System.out.println("[ERR] Notification already displayed");
-		}
-	}
-
-	private void hideNotification(){
-		if(displayed){
-			System.out.println("Notification hidden");
-			window.setVisible(false);
-			displayed = false;
-			window.setLocation((int)width-305, (int)(height-180-taskBarHeight-5));
-		}else{
-			System.out.println("[ERR] Notification already hidden");
-		}
+	public boolean isConnected(){
+		return isConnected;
 	}
 
 	/**
@@ -305,30 +154,4 @@ public class ClientConnexion extends MouseAdapter implements Runnable, ActionLis
 		System.out.println("Command "+command+" sent to server");
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		Object src = e.getSource();
-		if(src == ok){
-			send("OK");
-			hideNotification();
-		}
-		else if(src == min){
-			send("2MIN");
-			hideNotification();
-		}
-		else if(src == no){
-			send("NO");
-			hideNotification();
-		}
-		else if(src == trayIcon){
-			displayNotification();
-		}
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e){
-		Object src = e.getSource();
-
-		hideNotification();
-	}
 }

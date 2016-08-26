@@ -1,0 +1,406 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"remov",
+				"removeMinMaxClose"
+			],
+			[
+				"print",
+				"printStackTrace"
+			],
+			[
+				"di",
+				"displayNotification"
+			],
+			[
+				"prin",
+				"println"
+			],
+			[
+				"displ",
+				"displayNotification"
+			],
+			[
+				"pr",
+				"println"
+			],
+			[
+				"common",
+				"common"
+			],
+			[
+				"card",
+				"cardLayout"
+			],
+			[
+				"notif",
+				"notifSoundPath"
+			],
+			[
+				"Audio",
+				"AudioInputStream"
+			],
+			[
+				"noti",
+				"notifSoundPath"
+			],
+			[
+				"get",
+				"getLocation"
+			],
+			[
+				"pri",
+				"println"
+			],
+			[
+				"JAVA",
+				"java"
+			],
+			[
+				"sy",
+				"System"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "pack",
+		"selected_items":
+		[
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"package",
+				"Package Control: Install Package"
+			],
+			[
+				"package con",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 400.0
+	},
+	"console":
+	{
+		"height": 175.0,
+		"history":
+		[
+			"make all",
+			"ls",
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)",
+			"ls"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/Florent/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Users/Florent/AppData/Local/Temp/Rar$DRa0.324/org/jdesktop/swingx/border/DropShadowBorder.java",
+		"/C/Users/Florent/Dropbox/Projets/DinnerTimePi/makefile",
+		"/C/Users/Florent/Dropbox/Projets/DinnerTimePi/bin/client/MANIFEST.MF",
+		"/C/Users/Florent/Dropbox/Projets/DinnerTimePi/.git/config",
+		"/C/Users/Florent/Dropbox/Projets/Tests/MainFrame.java",
+		"/C/Users/Florent/Dropbox/Projets/DinnerTimePi/bin/server/MANIFEST.MF",
+		"/C/Users/Florent/AppData/Local/Temp/Rar$DIa0.664/DropShadowBorder.java",
+		"/C/Users/Florent/Dropbox/Projets/DinnerTimePi/src/client/DropShadowBorder.java",
+		"/C/Users/Florent/Dropbox/Projets/DinnerTimePi/src/client/ClientConnexion.java",
+		"/C/Users/Florent/Documents/Jeux/Border Lands 2 Save Editor/Gibbed.Borderlands2.SaveEdit.exe.config",
+		"/C/Users/Florent/Dropbox/Projets/DinnerTimePi/test.html",
+		"/C/Users/Florent/.ssh/id_rsa.pub",
+		"/C/Users/Florent/Dropbox/Cours/IUT/Année 1/M2105/Projet Wintel/src/control/EcouteurWtAjouter.java",
+		"/C/Users/Florent/Dropbox/Cours/IUT/Année 1/M2105/Projet Wintel/src/control/EcouteurWintel.java",
+		"/C/Users/Florent/Dropbox/Cours/IUT/Année 1/M2105/Projet Wintel/src/control/EcouteurWtModifier.java",
+		"/C/Users/Florent/Dropbox/Cours/IUT/Année 1/M2105/Projet Wintel/src/control/EcouteurWtSupprimer.java",
+		"/C/Users/Florent/Dropbox/Cours/IUT/Année 1/M2105/Projet Wintel/src/control/EcouteurWtAide.java",
+		"/C/Users/Florent/Dropbox/Projets/DinnerTimePi/src/server/TimeServer.java",
+		"/C/Users/Florent/Dropbox/Projets/DinnerTimePi/src/common/Constants.java",
+		"/C/Users/Florent/Dropbox/Projets/DinnerTimePi/src/server/ClientProcessor.java",
+		"/C/Users/Florent/Dropbox/Cours/IUT/Année 1/M2105/Projet Wintel/src/ihm/Wintel.java",
+		"/C/Users/Florent/Dropbox/Projets/DinnerTimePi/src/server/Main_Server.java",
+		"/C/Users/Florent/Dropbox/Projets/DinnerTimePi/src/Constants.java",
+		"/C/Users/Florent/Dropbox/Projets/DinnerTimePi/src/client/Main_Client.java",
+		"/C/Users/Florent/Downloads/Torrent/Native Instruments Guitar Rig 5 Pro v5.1.1 UNLOCKED - R2R/Guitar Rig 5.1.1 Pro.nfo",
+		"/G/issue.txt",
+		"/C/Users/Florent/Downloads/Torrent/Native.Instruments.Guitar.Rig.5.v5.2.1.Update.Incl.Patched.and.Keygen-R2R/Native.Instruments.Guitar.Rig.5.v5.2.1.Update.Incl.Patched.and.Keygen-R2R.nfo",
+		"/G/cmdline.txt",
+		"/G/config.txt",
+		"/G/kernel.img",
+		"/C/Users/Florent/Downloads/Torrent/Native.Instruments.Guitar.Rig.5.v5.2.1.Update.Incl.Patched.and.Keygen-R2R/R2R.nfo",
+		"/C/Users/Florent/Dropbox/Cours/IUT/Année 2/Turing/TuringMachine/src/ctrl/TMCtrl.java",
+		"/C/Users/Florent/Dropbox/Cours/IUT/Année 2/Turing/TuringMachine/src/view/TMView.java",
+		"/C/Users/Florent/Dropbox/Cours/IUT/Année 2/Turing/TuringMachine/src/view/TransitionTableModel.java",
+		"/C/Users/Florent/Dropbox/Cours/IUT/Année 2/Turing/TuringMachine/src/view/Tape.java",
+		"/F/config.txt",
+		"/C/Users/Florent/.bashrc",
+		"/C/Users/Florent/.viminfo",
+		"/C/Users/Florent/.bash_history",
+		"/C/Users/Florent/.profile",
+		"/C/Users/Florent/.gitconfig",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/gggm!.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/getNews.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/gggm! 2.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/getGGGM.php",
+		"/C/Users/Florent/Dropbox/Projets/DinnerTimePi/src/server/Main_Serveur.java",
+		"/C/Users/Florent/Dropbox/Documents/Contenu Site Web",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/index.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/group-photo__container 2.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/getAwesomePeople.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/group-photo__container.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/style.css",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/photo-group.css",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/photo-group.scss",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/custom.css",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/grid.css",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/bootstrap.min.css",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/variables.css",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/wow.min.js",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/queryParametersBuilder.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/index 2.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/clubs.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/carousel.js",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/clubs 2.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/photo-gallery.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/index 3.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/main.js",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/getClubs.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/getHallOfFame.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/evenements 2.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/evenements.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/menu 2.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/getEvents.php",
+		"/C/Users/Florent/Desktop/getHallOfClubs.php",
+		"/C/Users/Florent/Desktop/clubs.php",
+		"/C/Users/Florent/Desktop/get_clubs.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/contact-holder 2.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/contact-holder.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/menu.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/news-grid.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/news-grid 2.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/news-slideshow.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/news-slideshow 2.php",
+		"/C/Users/Florent/Dropbox/Cours/ESIR/Système/tp_c/p2/src/pluginmanager.cc",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/news-grid__news-window.php",
+		"/C/Users/Florent/Dropbox/Cours/ESIR/Système/Shell/tp2/q10.sh",
+		"/C/Users/Florent/Dropbox/Cours/ESIR/Système/Shell/tp2/q8.sh",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/partners.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/getPartners.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/partners 2.php",
+		"/C/Users/Florent/Dropbox/Cours/ESIR/AC/TP4_AC/src/Population.java",
+		"/C/Users/Florent/Dropbox/Cours/ESIR/AC/TP4_AC/src/Individu_VDC.java",
+		"/C/Users/Florent/Dropbox/Cours/ESIR/AC/TP3_AC/src/robdd/ROBDD.java",
+		"/C/Users/Florent/Dropbox/Cours/ESIR/AC/TP3_AC/src/main/Main.java",
+		"/C/Users/Florent/Dropbox/Cours/ESIR/AC/TP4_AC/src/Client_Sac_A_Dos.java",
+		"/C/Users/Florent/Dropbox/Cours/ESIR/AC/TP4_AC/src/Individu_SAD.java",
+		"/C/Users/Florent/Dropbox/Projets/DinnerTimePi/src/client/Main.java",
+		"/C/Users/Florent/Dropbox/Cours/ESIR/AC/TP3_AC/Main.java",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/photo.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/Rdd.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/Model_rdd.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/view_rdd.php",
+		"/C/Users/Florent/Dropbox/Cours/ESIR/AC/Graph/Projet/src/Main.py",
+		"/C/Users/Florent/Dropbox/Cours/ESIR/AC/Graph/Projet/src/allocateur.py",
+		"/C/Users/Florent/Dropbox/Cours/ESIR/AC/Graph/Projet/src/scenar_1.py",
+		"/C/Users/Florent/Dropbox/Cours/ESIR/AC/Graph/Projet/src/scenar_2.py",
+		"/C/Users/Florent/Dropbox/Cours/ESIR/AC/Graph/Projet/src/scenar_3.py",
+		"/C/Users/Florent/Dropbox/Cours/ESIR/AC/Graph/Projet/src/scenar_4.py",
+		"/C/Users/Florent/Dropbox/Cours/ESIR/AC/Graph/Projet/src/Nouveau document texte.txt",
+		"/C/Users/Florent/Dropbox/Cours/ESIR/AC/Graph/Projet/src/README.txt",
+		"/F/TP5/DE2_BOARD_Soft_student/Interrupt1student.c",
+		"/F/TP5/DE2_BOARD_Soft_student/Interruptstudent.c",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/view_trombi.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/Diplomes.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/view_slider.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/view_reseau_display.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/view_reseau.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/view_infos.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/view_inte.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/view_menusRU.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/view_rendusce.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/view_bai.php",
+		"/C/Users/Florent/AppData/Local/Temp/fz3temp-1/view_promotions.php",
+		"/C/Users/Florent/Dropbox/Cours/ESIR/AC/TP2_AC/src/main/FFT_2D.java",
+		"/C/Users/Florent/Dropbox/Cours/ESIR/AC/TP2_AC/src/main/FFT_1D.java",
+		"/C/Users/Florent/Dropbox/Cours/ESIR/AC/TP2_AC/src/main/CpxTab.java",
+		"/C/Users/Florent/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap"
+	],
+	"find":
+	{
+		"height": 27.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"Option",
+			"before",
+			"nth-of-type",
+			"photo",
+			"photo_holder",
+			"holder",
+			"wow",
+			"newsImagePath",
+			"color",
+			"30",
+			"ctrl+d",
+			"ctrl+d*",
+			"ctrl+K",
+			"ctrl+up",
+			"ctrl+k",
+			"row",
+			"remove",
+			"delete",
+			"_line",
+			"delete_line",
+			"line",
+			"delete",
+			"assert",
+			"	`--",
+			"`-- ",
+			" \n",
+			"\nLes sources se trouvent dans le répertoire \\src\n\nDes schémas de nos filtres composés sont disponibles en .png dans le répertoire \\schemas\n\nLes fichiers .raw utilisés dans la fonction main du TP sont dans le répertoire \\raw\nLes fichiers générés sont, eux, dans le répertoire \\genera",
+			"sqrt"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"Main_Serveur"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+		"last_automatic_layout":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		]
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 155.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
