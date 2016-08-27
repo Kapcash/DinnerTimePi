@@ -10,15 +10,17 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import static common.Constants.getScaledImageIcon;
+import static common.Constants.getCommands;
 
 public class MainListener extends MouseAdapter implements AdjustmentListener{
 	
 	MainView view;
 	ClientConnexion client;
 
-	public MainListener(MainView v, ClientConnexion c){
+	public MainListener(MainView v){
 		this.view = v;
-		this.client = c;
+		this.client = ClientConnexion.getInstance();
+		if(client == null) System.out.println("NUULLLL");
 	}
 
 	@Override
@@ -28,17 +30,24 @@ public class MainListener extends MouseAdapter implements AdjustmentListener{
 			//TODO
 		}
 		else if(src == view.getReloadLabel()){
-			view.addLog("Trying to connect","data/img/reload.png");
-			new Thread(client).start();
+			if(!client.isConnected()){
+				view.addLog("Trying to connect","data/img/reload.png");
+				new Thread(client).start();
+			}
 		}
 		else if(src == view.getLogoutLabel()){
+			System.out.println("Exiting application");
 			System.exit(0);
 		}
 		else if(src == view.getCloseLabel()){
 			view.hideGUI();
 		}
 		else if(src == view.getTrayIcon()){
-			view.displayGUI();
+			if(!view.isShown()){
+				view.displayGUI();
+			} else {
+				view.hideGUI();
+			}
 		}
 	}
 

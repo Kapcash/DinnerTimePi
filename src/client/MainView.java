@@ -13,7 +13,6 @@ import static common.Constants.getScaledImageIcon;
 public class MainView{
 
 	// GUI
-	private JButton ok,min,no;
 	private JLabel close,connect,logout,connectIcon,settings,reload;
 	private JFrame window;
 	private JPanel logs;
@@ -34,8 +33,8 @@ public class MainView{
 	private boolean displayed = false;
 	private ClientConnexion client;
 
-	public MainView(ClientConnexion c){
-		this.client = c;
+	public MainView(){
+		this.client = ClientConnexion.getInstance();
 		createAndInitGUI();
 		attachReactions();
 	}
@@ -140,7 +139,7 @@ public class MainView{
 	}
 
 	private void attachReactions(){
-		MainListener controller = new MainListener(this,client);
+		MainListener controller = new MainListener(this);
 		settings.addMouseListener(controller);
 		close.addMouseListener(controller);
 		logout.addMouseListener(controller);
@@ -153,7 +152,7 @@ public class MainView{
 	 * Display the  GUI notification, asking the user for an answer
 	 */
 	public void displayGUI() {
-		if(!displayed){
+		if(!isShown()){
 			displayed = true;
 			System.out.println("Notification displayed");
 			//playSound(new File(notifSoundPath)); //TODO : Put in other class
@@ -164,7 +163,7 @@ public class MainView{
 	}
 
 	public void hideGUI(){
-		if(displayed){
+		if(isShown()){
 			System.out.println("Notification hidden");
 			window.setVisible(false);
 			displayed = false;
@@ -175,6 +174,12 @@ public class MainView{
 
 	public void addLog(String message, String icoPath){
 		logs.add(new LogPanel(message, getScaledImageIcon(new ImageIcon(icoPath),20,20)));
+		scroll.revalidate();
+		displayGUI();
+	}
+
+	public void addLogEat(String message, String icoPath){
+		logs.add(new LogEat(message, getScaledImageIcon(new ImageIcon(icoPath),20,20)));
 		scroll.revalidate();
 		displayGUI();
 	}
@@ -193,6 +198,10 @@ public class MainView{
 			connect.setText("Disconnected");
 			connectIcon.setIcon(getScaledImageIcon(new ImageIcon("data/img/error.png"),20,20));
 		}
+	}
+
+	public boolean isShown(){
+		return displayed;
 	}
 
 	/* --- Getters --- */

@@ -8,7 +8,7 @@ public class MainClient {
 
 	public static void main(String[] args) {
 
-		Thread client = new Thread(new ClientConnexion());
+		Thread client = new Thread(ClientConnexion.getInstance());
 		client.start();
 	}
 }

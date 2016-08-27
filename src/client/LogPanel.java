@@ -10,6 +10,8 @@ import static common.Constants.getScaledImageIcon;
 public class LogPanel extends JPanel{
 
 	protected String message;
+	protected JPanel center,south;
+	protected JLabel mesLabel,date;
 
 	public LogPanel(String mes, ImageIcon c){
 		super();
@@ -21,8 +23,8 @@ public class LogPanel extends JPanel{
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
-		JPanel center = new JPanel();
-		JLabel mesLabel = new JLabel(message);
+		center = new JPanel();
+		mesLabel = new JLabel(message);
 		mesLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		
 		center.setLayout(new BoxLayout(center,BoxLayout.LINE_AXIS));
@@ -36,11 +38,11 @@ public class LogPanel extends JPanel{
 		SimpleDateFormat formatter = new SimpleDateFormat(pattern);
 		String formatted = formatter.format(new Date());
 
-		JLabel date = new JLabel(formatted, JLabel.RIGHT);
+		date = new JLabel(formatted, JLabel.RIGHT);
 		date.setForeground(Color.LIGHT_GRAY);
 		date.setFont(new Font("Segoe UI", Font.PLAIN, 10));
 		
-		JPanel south = new JPanel();
+		south = new JPanel();
 		south.setLayout(new BoxLayout(south,BoxLayout.LINE_AXIS));
 		south.add(Box.createHorizontalGlue());
 		south.add(date);

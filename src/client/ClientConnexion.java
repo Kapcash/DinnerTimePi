@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import java.io.File;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import javax.sound.sampled.*;
 
 import static common.Constants.*;
 
@@ -17,6 +16,8 @@ import static common.Constants.*;
  */
 public class ClientConnexion implements Runnable{
 
+	// Instance
+	private static ClientConnexion instance;
 	// Objects
 	private Socket connexion = null;
 	private PrintWriter writer = null;
@@ -24,8 +25,6 @@ public class ClientConnexion implements Runnable{
 	private boolean isConnected = false;
 	private MainView view;
 
-	// Constants
-	
 	/**
 	 * The array containing the possible client answers.
 	 */
@@ -37,15 +36,19 @@ public class ClientConnexion implements Runnable{
 	private static int count = 0;
 	private String name = "Client-";
 
-	public ClientConnexion(){
+	protected ClientConnexion(){
 		name += ++count;
-		//displayed = false;
+	}
 
-		view = new MainView(this);
+	public static ClientConnexion getInstance(){
+		if(instance == null){
+			instance = new ClientConnexion();
+		}
+		return instance;
 	}
 
 	public void connect(){
-		if(!isConnected){
+		if(!isConnected()){
 			try {
 				connexion = new Socket(getHost(), getPort()); //From Constants
 				if(connexion != null){
@@ -58,7 +61,7 @@ public class ClientConnexion implements Runnable{
 				System.out.println("The Server is not running.");
 				view.addLog("Server not running","data/img/error.png");
 			}
-			view.setConnectionState(isConnected);
+			view.setConnectionState(isConnected());
 		}
 	}
 
@@ -66,8 +69,10 @@ public class ClientConnexion implements Runnable{
 	 * Launch the client connexion. Wait for the server response.
 	 */
 	public void run(){
-		this.connect();
-		while(isConnected){
+		//Run the client app
+		if(view == null) view = new MainView(); //Create GUI if doesn't exist
+		this.connect(); //Connect to server
+		while(isConnected()){
 			try {
 
 				writer = new PrintWriter(connexion.getOutputStream(), true);
@@ -78,13 +83,17 @@ public class ClientConnexion implements Runnable{
 				System.out.println("["+name+"] : "+response+" received");
 
 				if(response.equals(getServerQuestion())){
-					view.addLog("Time to eat !","data/img/in.png");
+					view.addLogEat("Time to eat !","data/img/in.png");
 					playSound(getNotifSoundPath());
 				}
 			} catch (IOException ioEx) {
 				view.addLog("Server not running anymore", "data/img/error.png");
+				isConnected = false;
+				view.setConnectionState(isConnected);
 			} catch (NullPointerException nullEx){
 				view.addLog("Server not launched", "data/img/error.png");
+				isConnected = false;
+				view.setConnectionState(isConnected);
 			}
 		}
 	}
@@ -115,7 +124,7 @@ public class ClientConnexion implements Runnable{
 	 * Send a specific answer to the server.
 	 * @param command The command to send to the server, included in the 'listCommand' array.
 	 */
-	private void send(String command){
+	public void send(String command){
 		writer.write(command);
 		writer.flush();
 		System.out.println("Command "+command+" sent to server");
