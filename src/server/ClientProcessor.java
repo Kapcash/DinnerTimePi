@@ -61,7 +61,7 @@ public class ClientProcessor implements Runnable{
 
 				String response = read();
 				InetSocketAddress remote = (InetSocketAddress)sock.getRemoteSocketAddress();
-				
+				reactionResponse(response);
 
 				// Close the connexion between the server and the client
 				if(closeConnexion){
@@ -84,9 +84,8 @@ public class ClientProcessor implements Runnable{
 	private void reactionResponse(String response){
 		String[] commands = getCommands();
 
-		System.out.print("[");
-		if(response.toUpperCase() == commands[0]){
-			System.out.print(commands[0]);
+		System.out.println("["+response+"] received from "+getName()+".");
+		if(response.equals(commands[0])){
 			Thread t = new Thread(new Runnable(){
 				public void run(){
 					try{
@@ -106,24 +105,28 @@ public class ClientProcessor implements Runnable{
 			});
 			t.start();
 		}
-		else if(response.toUpperCase() == commands[1]){
+		else if(response.equals(commands[1])){
 			try{
 				Process proc_mode = Runtime.getRuntime().exec(cmdFlash);
-				System.out.print(commands[1]);
 			} catch(IOException ioEx){
 				ioEx.printStackTrace();
 			}
 		}
-		else if(response.toUpperCase() == commands[2]){
+		else if(response.equals(commands[2])){
 			//TODO
-			System.out.print(commands[2]);
 		}
-		else if(response.toUpperCase() == commands[3]){
-			System.out.print(commands[3]);
+		else if(response.equals(commands[3])){
+			try{
+				//Turn off the LED of this client (from nb)
+				Process p = Runtime.getRuntime().exec("gpio write "+gpios[nb]+" 0");
+				p.waitFor();
+			} catch(InterruptedException e){
+				e.printStackTrace();
+			}catch(IOException e){
+				e.printStackTrace();
+			}
 			closeConnexion = true;
 		}
-		System.out.println("] received from "+getName()+".");
-
 	}
 
 	/**
