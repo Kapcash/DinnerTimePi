@@ -14,6 +14,6 @@ public class MainClient {
 /*		Thread client1 = new Thread(new ClientConnexion(host, port));
 		client1.start();
 */
-		new ClientConnexion(host,port); //For notification test
+		new ClientConnexion();
 	}
 }

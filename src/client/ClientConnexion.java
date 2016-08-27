@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import javax.sound.sampled.*;
 
-import static common.Constants.getCommands;
+import static common.Constants.*;
 
 /**
  * @author Kapcash
@@ -33,7 +33,7 @@ public class ClientConnexion implements Runnable{
 	/**
 	 * The array containing the possible client answers.
 	 */
-	private String[] listCommands = getCommands();
+	private String[] listCommands = getCommands(); //From Constants
 
 	/**
 	 * Number of local clients connected
@@ -41,33 +41,39 @@ public class ClientConnexion implements Runnable{
 	private static int count = 0;
 	private String name = "Client-";
 
-	public ClientConnexion(String host, int port){
+	public ClientConnexion(){
 		name += ++count;
 		//displayed = false;
 
 		view = new MainView(this);
+		
+		this.connect();
+	}
 
-		/*
-		try {
-			connexion = new Socket(host, port);
-			if(connexion != null){
-				isConnected = true;
+	public void connect(){
+		if(!isConnected){
+			try {
+				connexion = new Socket(getHost(), getPort()); //From Constants
+				if(connexion != null){
+					isConnected = true;
+				}
+			} catch (UnknownHostException e) {
+				System.out.println("UnknownHostException !");
+				view.addLog("Unknown host : "+getHost(),"data/img/error.png"); 
+			} catch (IOException e) {
+				System.out.println("The Server is not running.");
+				view.addLog("Server not running","data/img/error.png");
 			}
-		} catch (UnknownHostException e) {
-			System.out.println("UnknownHostException !");
-			//e.printStackTrace();
-		} catch (IOException e) {
-			System.out.println("The Server is not running.");
-			//TODO : Display the error frame
-			//e.printStackTrace();
-		}*/
+			view.setConnectionState(isConnected);
+		}
 	}
 
 	/**
 	 * Launch the client connexion. Wait for the server response.
 	 */
 	public void run(){
-		for(int i =0; i < 10; i++){
+		this.connect();
+		while(isConnected){
 			try {
 
 				writer = new PrintWriter(connexion.getOutputStream(), true);
@@ -77,19 +83,15 @@ public class ClientConnexion implements Runnable{
 				String response = read();
 				System.out.println("["+name+"] : "+response+" received");
 
-				if(response.equals("[Time to eat !]")){ 
-					//TODO : Change checking (if message from server change -> doens't work anymore)
-					view.displayGUI();
+				if(response.equals(getServerQuestion())){
+					view.addLog("Time to eat !","data/img/in.png"); 
 				}
-			} catch (IOException e) {
-				System.out.println("The Server is not running anymore.");
-				System.exit(1);
+			} catch (IOException ioEx) {
+				view.addLog("Server not running anymore", "data/img/error.png");
+			} catch (NullPointerException nullEx){
+				view.addLog("Server not launched", "data/img/error.png");
 			}
 		}
-
-		writer.write("CLOSE");
-		writer.flush();
-		writer.close();
 	}
 
 	public boolean isConnected(){

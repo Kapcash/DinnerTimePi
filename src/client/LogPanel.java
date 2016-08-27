@@ -15,9 +15,9 @@ public class LogPanel extends JPanel{
 		super();
 		this.message = mes;
 
-		setMinimumSize(new Dimension(272,45));
-		setPreferredSize(new Dimension(272,45));
-		setMaximumSize(new Dimension(272,45));
+		setMinimumSize(new Dimension(272,40));
+		setPreferredSize(new Dimension(272,40));
+		setMaximumSize(new Dimension(272,40));
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
@@ -26,6 +26,7 @@ public class LogPanel extends JPanel{
 		mesLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		
 		center.setLayout(new BoxLayout(center,BoxLayout.LINE_AXIS));
+		center.add(Box.createRigidArea(new Dimension(7,0)));
 		center.add(new JLabel(c));
 		center.add(Box.createRigidArea(new Dimension(7,0)));
 		center.add(mesLabel);

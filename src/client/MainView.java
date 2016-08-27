@@ -40,7 +40,6 @@ public class MainView{
 		this.client = c;
 		createAndInitGUI();
 		attachReactions();
-		displayGUI();
 	}
 
 	private void createAndInitGUI(){
@@ -95,11 +94,12 @@ public class MainView{
 		scroll = new JScrollPane(logs);
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); 
+		// scroll.setBorder(null);
 
 		close = new JLabel("Close");
 		close.setToolTipText("Disconnect DinnerTime");
 
-		connect = new JLabel(client.isConnected() ? "Connected" : "Disconnected");
+		connect = new JLabel("Trying to connect");
 
 		ImageIcon gear = getScaledImageIcon(new ImageIcon("data/img/settings.png"),20,20);
   		settings = new JLabel(gear);
@@ -147,7 +147,8 @@ public class MainView{
 		settings.addMouseListener(controller);
 		close.addMouseListener(controller);
 		logout.addMouseListener(controller);
-		trayIcon.addActionListener(controller);
+		trayIcon.addMouseListener(controller);
+		reload.addMouseListener(controller);
 		scroll.getVerticalScrollBar().addAdjustmentListener(controller);
 	}
 
@@ -175,11 +176,10 @@ public class MainView{
 		}
 	}
 
-	public void addLog(){
-		
-
-		logs.add(new LogPanel("Test",getScaledImageIcon(new ImageIcon("data/img/reload.png"),20,20)));
+	public void addLog(String message, String icoPath){
+		logs.add(new LogPanel(message, getScaledImageIcon(new ImageIcon(icoPath),20,20)));
 		scroll.revalidate();
+		displayGUI();
 	}
 
 	public void scroll(){
@@ -187,7 +187,26 @@ public class MainView{
 		vertical.setValue(vertical.getMaximum());
 	}
 
+	public void setConnectionState(boolean isConnected){
+		if(isConnected){
+			connect.setText("Connected");
+			connectIcon.setIcon(getScaledImageIcon(new ImageIcon("data/img/ok.png"),20,20));
+		}
+		else{
+			connect.setText("Disconnected");
+			connectIcon.setIcon(getScaledImageIcon(new ImageIcon("data/img/error.png"),20,20));
+		}
+	}
+
 	/* --- Getters --- */
+
+	public JLabel getConnectIcon(){
+		return connectIcon;
+	}
+
+	public JLabel getConnect(){
+		return connect;
+	}
 
 	public JLabel getCloseLabel(){
 		return close;
