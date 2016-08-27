@@ -25,7 +25,7 @@ public class MainListener extends MouseAdapter implements AdjustmentListener{
 	public void mouseClicked(MouseEvent e){
 		Object src = e.getSource();
 		if(src == view.getSettingsLabel()){
-			view.addLog("Test","data/img/clock-1.png");
+			//TODO
 		}
 		else if(src == view.getReloadLabel()){
 			view.addLog("Trying to connect","data/img/reload.png");

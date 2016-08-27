@@ -27,10 +27,6 @@ public class ClientConnexion implements Runnable{
 	// Constants
 	
 	/**
-	 * The path to the notification sound file. Only .wav file can be played !
-	 */
-	private static final String notifSoundPath = "data/sounds/NotifTime.wav";
-	/**
 	 * The array containing the possible client answers.
 	 */
 	private String[] listCommands = getCommands(); //From Constants
@@ -82,7 +78,8 @@ public class ClientConnexion implements Runnable{
 				System.out.println("["+name+"] : "+response+" received");
 
 				if(response.equals(getServerQuestion())){
-					view.addLog("Time to eat !","data/img/in.png"); 
+					view.addLog("Time to eat !","data/img/in.png");
+					playSound(getNotifSoundPath());
 				}
 			} catch (IOException ioEx) {
 				view.addLog("Server not running anymore", "data/img/error.png");

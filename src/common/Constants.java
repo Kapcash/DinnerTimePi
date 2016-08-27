@@ -14,9 +14,14 @@ public class Constants{
 
 	private static final String host = "192.168.1.35"; //Adapt for your network, give a fix IP by DHCP
 	private static final int port = 35150;
+	/**
+	 * The path to the notification sound file. Only .wav file can be played !
+	 */
+	private static final String notifSoundPath = "data/sounds/NotifTime.wav";
 
 	public static String[] getCommands(){ return listCommands; }
 	public static String getServerQuestion(){ return serverQuestion; }
+	public static String getNotifSoundPath(){ return notifSoundPath; }
 	public static int getPort(){ return port; }
 	public static String getHost(){ return host; }
 
@@ -29,8 +34,9 @@ public class Constants{
 	/**
 	 * @param soundFile .wav file to play
 	 */
-	public static void playSound(File soundFile){
+	public static void playSound(String pathToSoundFile){
 		try{
+			File soundFile = new File(pathToSoundFile);
 			AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
 			Clip clip = AudioSystem.getClip();
 			clip.open(audioIn);
