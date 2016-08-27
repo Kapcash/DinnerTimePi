@@ -8,12 +8,7 @@ public class MainClient {
 
 	public static void main(String[] args) {
 
-		String host = "192.168.1.35";
-		int port = 35150;
-
-/*		Thread client1 = new Thread(new ClientConnexion(host, port));
-		client1.start();
-*/
-		new ClientConnexion(host,port); //For notification test
+		Thread client = new Thread(new ClientConnexion());
+		client.start();
 	}
 }
