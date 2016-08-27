@@ -22,6 +22,7 @@ public class ClientProcessor implements Runnable{
 	 * The pin number of the current client (from 0 to 3)
 	 */
 	private int nb;
+	private boolean closeConnexion = false;
 	/**
 	 * Pin numbers used for client LEDS
 	 */
@@ -53,7 +54,6 @@ public class ClientProcessor implements Runnable{
 	 * Launch the client process which execute the client answer on the LEDs.
 	 */
 	public void run(){
-		boolean closeConnexion = false;
 		while(!sock.isClosed()){
 			try {
 				writer = new PrintWriter(sock.getOutputStream());
@@ -61,45 +61,7 @@ public class ClientProcessor implements Runnable{
 
 				String response = read();
 				InetSocketAddress remote = (InetSocketAddress)sock.getRemoteSocketAddress();
-				System.out.print("[");
-				switch(response.toUpperCase()){
-				case getCommands()[0]:
-					System.out.print(getCommands()[1]);
-					Thread t = new Thread(new Runnable(){
-							public void run(){
-								try{
-									//Turn on the LED of this client (from nb)
-									Process p = Runtime.getRuntime().exec("gpio write "+gpios[nb]+" 1");
-									p.waitFor();
-									Thread.sleep(timeOn*1000); // 1 min
-									// Turn off LED
-									p = Runtime.getRuntime().exec("gpio write "+gpios[nb]+" 0");
-									p.waitFor();
-								} catch(InterruptedException e){
-									e.printStackTrace();
-								}catch(IOException e){
-									e.printStackTrace();
-								}
-							}
-						});
-					t.start();
-					break;
-				case getCommands()[1]:
-					Process proc_mode = Runtime.getRuntime().exec(cmdFlash);
-					System.out.print(getCommands()[1]);
-					break;
-				case getCommands()[2]:
-					//TODO
-					System.out.print(getCommands()[2]);
-					break;
-				case getCommands()[3]:
-					System.out.print(getCommands()[3]);
-					closeConnexion = true;
-					break;
-				default: 
-					break;
-				}
-				System.out.println("] received from "+getName()+".");
+				
 
 				// Close the connexion between the server and the client
 				if(closeConnexion){
@@ -119,13 +81,51 @@ public class ClientProcessor implements Runnable{
 		}
 	}
 
-	/**
-	 * @return Return the name of the client
-	 */
-	public String getName(){
-		return sock.getInetAddress().getHostName();
+	private void reactionResponse(String response){
+		String[] commands = getCommands();
+
+		System.out.print("[");
+		if(response.toUpperCase() == commands[0]){
+			System.out.print(commands[0]);
+			Thread t = new Thread(new Runnable(){
+				public void run(){
+					try{
+						//Turn on the LED of this client (from nb)
+						Process p = Runtime.getRuntime().exec("gpio write "+gpios[nb]+" 1");
+						p.waitFor();
+						Thread.sleep(Integer.parseInt(timeOn)*1000); // 1 min
+						// Turn off LED
+						p = Runtime.getRuntime().exec("gpio write "+gpios[nb]+" 0");
+						p.waitFor();
+					} catch(InterruptedException e){
+						e.printStackTrace();
+					}catch(IOException e){
+						e.printStackTrace();
+					}
+				}
+			});
+			t.start();
+		}
+		else if(response.toUpperCase() == commands[1]){
+			try{
+				Process proc_mode = Runtime.getRuntime().exec(cmdFlash);
+				System.out.print(commands[1]);
+			} catch(IOException ioEx){
+				ioEx.printStackTrace();
+			}
+		}
+		else if(response.toUpperCase() == commands[2]){
+			//TODO
+			System.out.print(commands[2]);
+		}
+		else if(response.toUpperCase() == commands[3]){
+			System.out.print(commands[3]);
+			closeConnexion = true;
+		}
+		System.out.println("] received from "+getName()+".");
+
 	}
-	
+
 	/**
 	 * Send the server question to this client
 	 */
@@ -145,6 +145,13 @@ public class ClientProcessor implements Runnable{
 		stream = reader.read(b);
 		response = new String(b, 0, stream);
 		return response;
+	}
+
+	/**
+	 * @return Return the name of the client
+	 */
+	public String getName(){
+		return sock.getInetAddress().getHostName();
 	}
 
 }

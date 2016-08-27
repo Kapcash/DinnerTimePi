@@ -55,7 +55,7 @@ public class TimeServer {
 	 */
 	protected TimeServer(String pHost, int pPort){
 		int i=0;
-		while(++i != nbOfTry && !initServer(pHost, pPort)){
+		while(++i != nbOfTry && !initServer(getHost(), getPort())){
 			try{
 				Thread.sleep(500);
 			}catch(InterruptedException intEx){
