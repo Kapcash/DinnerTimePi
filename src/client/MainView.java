@@ -2,8 +2,6 @@ package client;
 
 import javax.swing.*;
 import java.awt.*;
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import org.jdesktop.swingx.border.DropShadowBorder;
 import java.io.IOException;
@@ -52,14 +50,7 @@ public class MainView{
             System.out.println("SystemTray is not supported on this device");
             return;
         }
-        BufferedImage img = null;
-        Image dinnerIcon = null;
-		try {
-    		dinnerIcon = ImageIO.read(new File("data/img/clock-1.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-        trayIcon = new TrayIcon(dinnerIcon, "DinnerTimePi");
+        trayIcon = new TrayIcon(new ImageIcon("data/img/DinnerTimeIcon_OK.png").getImage(), "DinnerTimePi");
         trayIcon.setImageAutoSize(true);
         try {
             SystemTray.getSystemTray().add(trayIcon);
@@ -135,7 +126,6 @@ public class MainView{
 		contentPane.add(south,BorderLayout.SOUTH);
 		window.pack();
 		window.setLocation((int)width-305, (int)(height-180-taskBarHeight-5));
-
 	}
 
 	private void attachReactions(){
@@ -193,10 +183,12 @@ public class MainView{
 		if(isConnected){
 			connect.setText("Connected");
 			connectIcon.setIcon(getScaledImageIcon(new ImageIcon("data/img/ok.png"),20,20));
+			trayIcon.setImage(new ImageIcon("data/img/DinnerTimeIcon_OK.png").getImage());
 		}
 		else{
 			connect.setText("Disconnected");
 			connectIcon.setIcon(getScaledImageIcon(new ImageIcon("data/img/error.png"),20,20));
+			trayIcon.setImage(new ImageIcon("data/img/DinnerTimeIcon_ERROR.png").getImage());
 		}
 	}
 
