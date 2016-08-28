@@ -17,7 +17,7 @@ public class LogPanel extends JPanel{
 	public LogPanel(String mes, String path){
 		super();
 		this.message = mes;
-		ico = getScaledImageIcon(path,20,20);
+		ico = getScaledImageIcon(new ImageIcon(path),20,20);
 
 		initGUI();
 	}
@@ -35,7 +35,7 @@ public class LogPanel extends JPanel{
 		
 		center.setLayout(new BoxLayout(center,BoxLayout.LINE_AXIS));
 		center.add(Box.createRigidArea(new Dimension(7,0)));
-		center.add(new JLabel(c));
+		center.add(new JLabel(ico));
 		center.add(Box.createRigidArea(new Dimension(7,0)));
 		center.add(mesLabel);
 

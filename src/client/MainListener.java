@@ -4,15 +4,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 
-import java.awt.event.AdjustmentListener;
-import java.awt.event.AdjustmentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import static common.Constants.getScaledImageIcon;
 import static common.Constants.getCommands;
 
-public class MainListener extends MouseAdapter implements AdjustmentListener{
+public class MainListener extends MouseAdapter{
 	
 	MainView view;
 	ClientConnexion client;
@@ -50,11 +48,4 @@ public class MainListener extends MouseAdapter implements AdjustmentListener{
 			}
 		}
 	}
-
-	@Override
-	public void adjustmentValueChanged(AdjustmentEvent e){
-		// TODO : Fix because it always change scroll, even when manually changing
-	   	// e.getAdjustable().setValue(e.getAdjustable().getMaximum()); 
-    }
-
 }

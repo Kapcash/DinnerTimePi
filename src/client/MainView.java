@@ -145,7 +145,6 @@ public class MainView{
 		logout.addMouseListener(controller);
 		trayIcon.addMouseListener(controller);
 		reload.addMouseListener(controller);
-		scroll.getVerticalScrollBar().addAdjustmentListener(controller);
 	}
 
 	/**
@@ -173,13 +172,13 @@ public class MainView{
 	}
 
 	public void addLog(String message, String icoPath){
-		logs.add(new LogPanel(message, icoPath);
+		logs.add(new LogPanel(message, icoPath));
 		scroll();
 		displayGUI();
 	}
 
 	public void addLogEat(String message, String icoPath){
-		logs.add(new LogEat(message, icoPath);
+		logs.add(new LogEat(message, icoPath));
 		scroll();
 		displayGUI();
 	}
