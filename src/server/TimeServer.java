@@ -54,6 +54,7 @@ public class TimeServer {
 	 * @param pPort The port used by the server.
 	 */
 	protected TimeServer(String pHost, int pPort){
+		attachShutDownHook();
 		int i=0;
 		while(++i != nbOfTry && !initServer(getHost(), getPort())){
 			try{
@@ -164,6 +165,15 @@ public class TimeServer {
 	static public void closeClient(ClientProcessor c){
 		System.out.println("Client "+c.getName()+" disconnected !");
 		list.remove(c);
+	}
+
+	private void attachShutDownHook(){
+		Runtime.getRuntime().addShutdownHook(new Thread(){
+			@Override
+			public void run(){
+				close();	
+			}
+		});
 	}
 	
 	/**
