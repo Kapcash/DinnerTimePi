@@ -11,8 +11,8 @@ public class LogEat extends LogPanel{
 
 	JLabel ok,min,no;
 
-	public LogEat(String mes, ImageIcon c){
-		super(mes,c);
+	public LogEat(String mes, String path){
+		super(mes,path);
 		
 		initGUI();
 		attachReactions();

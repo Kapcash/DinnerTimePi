@@ -12,11 +12,17 @@ public class LogPanel extends JPanel{
 	protected String message;
 	protected JPanel center,south;
 	protected JLabel mesLabel,date;
+	protected ImageIcon ico;
 
-	public LogPanel(String mes, ImageIcon c){
+	public LogPanel(String mes, String path){
 		super();
 		this.message = mes;
+		ico = getScaledImageIcon(path,20,20);
 
+		initGUI();
+	}
+
+	private void initGUI(){
 		setMinimumSize(new Dimension(272,40));
 		setPreferredSize(new Dimension(272,40));
 		setMaximumSize(new Dimension(272,40));

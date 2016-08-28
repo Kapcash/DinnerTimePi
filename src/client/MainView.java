@@ -173,18 +173,19 @@ public class MainView{
 	}
 
 	public void addLog(String message, String icoPath){
-		logs.add(new LogPanel(message, getScaledImageIcon(new ImageIcon(icoPath),20,20)));
-		scroll.revalidate();
+		logs.add(new LogPanel(message, icoPath);
+		scroll();
 		displayGUI();
 	}
 
 	public void addLogEat(String message, String icoPath){
-		logs.add(new LogEat(message, getScaledImageIcon(new ImageIcon(icoPath),20,20)));
-		scroll.revalidate();
+		logs.add(new LogEat(message, icoPath);
+		scroll();
 		displayGUI();
 	}
 
 	public void scroll(){
+		window.revalidate();
 		JScrollBar vertical = scroll.getVerticalScrollBar();
 		vertical.setValue(vertical.getMaximum());
 	}

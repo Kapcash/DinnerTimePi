@@ -27,7 +27,7 @@ public class MainListener extends MouseAdapter implements AdjustmentListener{
 	public void mouseClicked(MouseEvent e){
 		Object src = e.getSource();
 		if(src == view.getSettingsLabel()){
-			//TODO
+			view.addLog("There is no settings.","data/img/reload.png");
 		}
 		else if(src == view.getReloadLabel()){
 			if(!client.isConnected()){
@@ -53,8 +53,8 @@ public class MainListener extends MouseAdapter implements AdjustmentListener{
 
 	@Override
 	public void adjustmentValueChanged(AdjustmentEvent e){
-		//TODO : Fix because it always change scroll, even when manually changing
-        e.getAdjustable().setValue(e.getAdjustable().getMaximum());  
+		// TODO : Fix because it always change scroll, even when manually changing
+	   	// e.getAdjustable().setValue(e.getAdjustable().getMaximum()); 
     }
 
 }
