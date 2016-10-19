@@ -14,6 +14,10 @@ UninstallDisplayIcon={app}\DinnerTime
 UninstallDisplayName=DinnerTime
 SetupIconFile=data\img\DinnerTimeIcon_Files.ico
 
+[Tasks]
+Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
+Name: StartMenuEntry; Description: "Démarrer l'application au démarrage" ; GroupDescription: "Windows Startup"; Flags: unchecked   
+
 [Dirs]
 Name: "{app}\data"
 Name: "{app}\data\img"
@@ -31,4 +35,9 @@ Source: "data\sounds\*"; DestDir: "{app}\data\sounds"
 
 [Icons]
 Name: "{group}\DinnerTime"; Filename: "{app}\DinnerTimeClient.jar"; IconFilename: "{app}\data\img\DinnerTimeIcon_Files.ico"
-Name: "{commondesktop}\DinnerTime"; Filename: "{app}\DinnerTimeClient.jar"; IconFilename: "{app}\data\img\DinnerTimeIcon_Files.ico"
+Name: "{commondesktop}\DinnerTime"; Filename: "{app}\DinnerTimeClient.jar"; IconFilename: "{app}\data\img\DinnerTimeIcon_Files.ico"; Tasks: desktopicon
+
+Name: "{userstartup}\DinnerTime"; Filename: "{app}\DinnerTimeClient.jar"; IconFilename: "{app}\data\img\DinnerTimeIcon_Files.ico"; Tasks:StartMenuEntry;
+
+[Registry]
+;Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "DinnerTime"; ValueData: "{app}\DinnerTimeClient.jar"; Tasks:StartMenuEntry;
