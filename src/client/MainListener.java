@@ -12,13 +12,12 @@ import static common.Constants.getCommands;
 
 public class MainListener extends MouseAdapter{
 	
-	MainView view;
-	ClientConnexion client;
+	private MainView view;
+	private ClientConnexion client;
 
 	public MainListener(MainView v){
 		this.view = v;
 		this.client = ClientConnexion.getInstance();
-		if(client == null) System.out.println("NUULLLL");
 	}
 
 	@Override
@@ -29,8 +28,7 @@ public class MainListener extends MouseAdapter{
 		}
 		else if(src == view.getReloadLabel()){
 			if(!client.isConnected()){
-				view.addLog("Trying to connect","data/img/reload.png");
-				new Thread(client).start();
+				reload();
 			}
 		}
 		else if(src == view.getLogoutLabel()){
@@ -47,5 +45,11 @@ public class MainListener extends MouseAdapter{
 				view.hideGUI();
 			}
 		}
+	}
+
+	private void reload(){
+		view.setAnimate(true);
+		view.addLog("Trying to connect","data/img/reload.png");
+		new Thread(client).start();
 	}
 }

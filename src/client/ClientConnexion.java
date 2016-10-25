@@ -50,6 +50,7 @@ public class ClientConnexion implements Runnable{
 	public void connect(){
 		if(!isConnected()){
 			try {
+				view.reload(); //Each time we trying to connect the client -> Animate reload arrows
 				connexion = new Socket(getHost(), getPort()); //From Constants
 				if(connexion != null){
 					isConnected = true;
@@ -60,6 +61,7 @@ public class ClientConnexion implements Runnable{
 			} catch (IOException e) {
 				System.out.println("The Server is not running.");
 				view.addLog("Server not running","data/img/error.png");
+				view.setAnimate(false);
 			}
 			view.setConnectionState(isConnected());
 		}

@@ -7,6 +7,8 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 import java.io.IOException;
 
 import static common.Constants.getScaledImageIcon;
+import static common.Constants.playSound;
+import static common.Constants.getNotifSoundPath;
 
 public class MainView{
 
@@ -18,6 +20,10 @@ public class MainView{
 	private Color panelColor;
 	private JScrollPane scroll;
 	private int i=0;
+
+	private boolean animate;
+
+	private MainListener controller;
 
 	/**
 	 * Dimensions of the screen.
@@ -33,6 +39,7 @@ public class MainView{
 
 	public MainView(){
 		this.client = ClientConnexion.getInstance();
+		animate = true;
 		createAndInitGUI();
 		attachReactions();
 	}
@@ -50,7 +57,7 @@ public class MainView{
             System.out.println("SystemTray is not supported on this device");
             return;
         }
-        trayIcon = new TrayIcon(new ImageIcon("data/img/DinnerTimeIcon_OK.png").getImage(), "DinnerTimePi");
+        trayIcon = new TrayIcon(new ImageIcon("data/img/DinnerTimeIcon_ERROR.png").getImage(), "DinnerTimePi");
         trayIcon.setImageAutoSize(true);
         try {
             SystemTray.getSystemTray().add(trayIcon);
@@ -129,13 +136,14 @@ public class MainView{
 	}
 
 	private void attachReactions(){
-		MainListener controller = new MainListener(this);
+		controller = new MainListener(this);
 		settings.addMouseListener(controller);
 		close.addMouseListener(controller);
 		logout.addMouseListener(controller);
 		trayIcon.addMouseListener(controller);
 		reload.addMouseListener(controller);
 	}
+
 
 	/**
 	 * Display the  GUI notification, asking the user for an answer
@@ -144,11 +152,51 @@ public class MainView{
 		if(!isShown()){
 			displayed = true;
 			System.out.println("Notification displayed");
-			//playSound(new File(notifSoundPath)); //TODO : Put in other class
+			playSound(getNotifSoundPath());
 			window.setVisible(true);
 		}else{
 			System.out.println("[ERR] Notification already displayed");
 		}
+	}
+
+	/**
+	 * Display the  GUI notification, asking the user for an answer
+	 * Hide GUI after 'sec' seconds
+	 * @param sec The number of seconds to wait before hide gui
+	 */
+	public void displayGUI(int sec) {
+		new Thread(new Runnable(){
+			public void run(){
+				try{
+					Thread.sleep(sec*1000);
+				} catch(InterruptedException intEx){
+					intEx.printStackTrace();
+				}
+				hideGUI();
+			}
+		}).start();
+		displayGUI();
+	}
+
+	public void reload(){
+		new Thread(new Runnable(){
+			public void run(){
+				while(animate){
+					setReloadLabel(getScaledImageIcon(new ImageIcon("data/img/reload_2.png"),20,20));
+					try{
+						Thread.sleep(800);
+					} catch(InterruptedException intEx){
+						intEx.printStackTrace();
+					}
+					setReloadLabel(getScaledImageIcon(new ImageIcon("data/img/reload.png"),20,20));
+					try{
+						Thread.sleep(800);
+					} catch(InterruptedException intEx){
+						intEx.printStackTrace();
+					}
+				}
+			}
+		}).start();
 	}
 
 	public void hideGUI(){
@@ -164,7 +212,7 @@ public class MainView{
 	public void addLog(String message, String icoPath){
 		logs.add(new LogPanel(message, icoPath));
 		scroll();
-		displayGUI();
+		displayGUI(5);
 	}
 
 	public void addLogEat(String message, String icoPath){
@@ -224,6 +272,17 @@ public class MainView{
 
 	public JLabel getReloadLabel(){
 		return reload;
+	}
+
+	public void setReloadLabel(ImageIcon label){
+		reload.setIcon(label);
+		//System.out.println("Refreshing");
+		window.revalidate();
+		//window.repaint();
+	}
+
+	public void setAnimate(boolean ani){
+		animate = ani;
 	}
 
 }
