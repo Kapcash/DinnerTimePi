@@ -276,9 +276,7 @@ public class MainView{
 
 	public void setReloadLabel(ImageIcon label){
 		reload.setIcon(label);
-		//System.out.println("Refreshing");
 		window.revalidate();
-		//window.repaint();
 	}
 
 	public void setAnimate(boolean ani){
