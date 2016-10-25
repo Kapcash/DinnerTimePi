@@ -2,7 +2,7 @@
 
 [Setup]
 AppName=DinnerTime
-AppVersion=1.1
+AppVersion=1.3
 DefaultDirName={pf}\DinnerTime
 DefaultGroupName=DinnerTime       
 Compression=lzma2
@@ -38,6 +38,3 @@ Name: "{group}\DinnerTime"; Filename: "{app}\DinnerTimeClient.jar"; IconFilename
 Name: "{commondesktop}\DinnerTime"; Filename: "{app}\DinnerTimeClient.jar"; IconFilename: "{app}\data\img\DinnerTimeIcon_Files.ico"; Tasks: desktopicon
 
 Name: "{userstartup}\DinnerTime"; Filename: "{app}\DinnerTimeClient.jar"; IconFilename: "{app}\data\img\DinnerTimeIcon_Files.ico"; Tasks:StartMenuEntry;
-
-[Registry]
-;Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "DinnerTime"; ValueData: "{app}\DinnerTimeClient.jar"; Tasks:StartMenuEntry;
