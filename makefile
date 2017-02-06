@@ -5,7 +5,7 @@ JAR = jar
 JFLAGS = -g
 JARFLAGS = -cvfm
 
-CLASSPATH = ./
+CLASSPATH = ./bin/
 LIBS = ./libs/swingx.jar
 
 CLIENTPATH = ./src/client
@@ -21,7 +21,7 @@ common:
 
 clientAll:
 		$(JCC) $(JFLAGS) -d $(CLASSPATH) -cp $(CLASSPATH)\;$(LIBS) $(CLIENTPATH)/*.java
-		$(JAR) $(JARFLAGS) DinnerTimeClient.jar client/MANIFEST.MF client/*.class common/*.class
+		$(JAR) $(JARFLAGS) DinnerTimeClient.jar bin/client/MANIFEST.MF bin/client/*.class bin/common/*.class
 
 serverAll:
 		$(JCC) $(JFLAGS) -d $(CLASSPATH) -cp $(CLASSPATH) $(SERVERPATH)/*.java

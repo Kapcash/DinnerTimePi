@@ -104,7 +104,7 @@ public class TimeServer {
 		try{
 			Process p_init = Runtime.getRuntime().exec(cmdInitFlash);
 		}catch(IOException ioe){
-						ioe.printStackTrace();
+			ioe.printStackTrace();
 		}
 		
 		//Server loop
