@@ -101,7 +101,12 @@ public class TimeServer {
 	 */
 	public void open(){
 		System.out.println("Serveur initialised at : "+host+" address and : "+port+" port.");
-		Process p_init = Runtime.getRuntime().exec(cmdInitFlash);
+		try{
+			Process p_init = Runtime.getRuntime().exec(cmdInitFlash);
+		}catch(IOException ioe){
+						ioe.printStackTrace();
+		}
+		
 		//Server loop
 		Thread clientThread = new Thread(new Runnable(){
 			public void run(){
