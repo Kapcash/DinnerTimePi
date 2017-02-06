@@ -2,6 +2,7 @@
 
 if [ -z "$1" ];then
 	echo "Missing argument 1: <gpio pin number>"
+	exit 1
 fi
 if [ -z "$2" ];then
 	echo "Missing argument 2 : <flashing time>. 60 by default"
