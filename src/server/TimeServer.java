@@ -26,6 +26,7 @@ public class TimeServer {
 	static private TimeServer instance;
 	//Default values
 	static private String[] cmdButton = {"/bin/bash","/home/pi/Documents/DinnerTimePi/button.sh"}; //Command for listening button
+	static private String[] cmdInitFlash = {"/bin/bash","/home/pi/Documents/DinnerTimePi/flashInitServ.sh"}; //Flash LEDs when server init
 	//Variables
 	private ServerSocket server = null;
 	private boolean isRunning = true;
@@ -100,6 +101,7 @@ public class TimeServer {
 	 */
 	public void open(){
 		System.out.println("Serveur initialised at : "+host+" address and : "+port+" port.");
+		Process p_init = Runtime.getRuntime().exec(cmdInitFlash);
 		//Server loop
 		Thread clientThread = new Thread(new Runnable(){
 			public void run(){
