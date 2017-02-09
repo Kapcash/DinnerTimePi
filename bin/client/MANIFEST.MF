@@ -1,3 +1,3 @@
 Manifest-Version: 1.2
 Class-Path: libs/swingx.jar
-Main-Class: client.MainClient
+Main-Class: client.model.MainClient

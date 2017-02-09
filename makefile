@@ -5,7 +5,7 @@ JAR = jar
 JFLAGS = -g
 JARFLAGS = -cvfm
 
-CLASSPATH = ./bin/
+CLASSPATH = ./bin
 LIBS = ./libs/swingx.jar
 
 CLIENTPATH = ./src/client
@@ -20,12 +20,12 @@ common:
 		$(JCC) $(JFLAGS) -d $(CLASSPATH) -cp $(CLASSPATH) $(COMMONPATH)/*.java
 
 clientAll:
-		$(JCC) $(JFLAGS) -d $(CLASSPATH) -cp $(CLASSPATH)\;$(LIBS) $(CLIENTPATH)/*.java
-		$(JAR) $(JARFLAGS) DinnerTimeClient.jar bin/client/MANIFEST.MF bin/client/*.class bin/common/*.class
+		$(JCC) $(JFLAGS) -d $(CLASSPATH)/ -cp $(CLASSPATH)/;$(LIBS) $(CLIENTPATH)/model/*.java $(CLIENTPATH)/view/*.java $(CLIENTPATH)/control/*.java
+		$(JAR) $(JARFLAGS) DinnerTimeClient.jar $(CLASSPATH)/client/MANIFEST.MF $(CLASSPATH)/client/view/*.class $(CLASSPATH)/client/model/*.class $(CLASSPATH)/client/contorl/*.class $(CLASSPATH)/common/*.class
 
 serverAll:
 		$(JCC) $(JFLAGS) -d $(CLASSPATH) -cp $(CLASSPATH) $(SERVERPATH)/*.java
-		$(JAR) $(JARFLAGS) DinnerTimeServer.jar bin/server/MANIFEST.MF bin/server/*.class bin/common/*.class
+		$(JAR) $(JARFLAGS) DinnerTimeServer.jar $(CLASSPATH)/server/MANIFEST.MF $(CLASSPATH)/server/*.class $(CLASSPATH)/common/*.class
 
 all: common clientAll serverAll
 
